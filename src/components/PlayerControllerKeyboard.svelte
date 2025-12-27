@@ -464,30 +464,23 @@
   <T.Group>
     <RigidBody
       bind:rigidBody={body}
-      colliders={false}
+      colliders="ball"
       position={[8, 60, -119]}
       centerOfMass={[0, -1, 0]}
       mass={3}
       ccd
       name="player"
       type={player.id === gameStore.id ? "dynamic" : "kinematicPosition"}
+      oncollisionenter={() => {
+        isOnFloor = true;
+        isOnGround = true;
+      }}
+      oncollisionexit={() => {
+        isOnFloor = false;
+        isOnGround = false;
+      }}
     >
-      <Collider
-        shape="ball"
-        args={[0.5]}
-        mass={3}
-        oncreate={(ref) => {
-          // Setup if needed
-        }}
-        oncollisionenter={() => {
-          isOnFloor = true;
-          isOnGround = true;
-        }}
-        oncollisionexit={() => {
-          isOnFloor = false;
-          isOnGround = false;
-        }}
-      />
+      <!-- Visuals and camera moved inside or handled via refs -->
     </RigidBody>
 
     <T.Group bind:ref={kart} rotation={[0, Math.PI / 2, 0]}>
