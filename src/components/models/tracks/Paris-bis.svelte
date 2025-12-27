@@ -23,18 +23,22 @@
 </script>
 
 {#if $gltf}
+    <!-- Legacy Scale Structure: group[scale=50] -> group[scale=0.01] -->
     <T.Group {position} scale={50} {...props}>
-        <!-- Visual City -->
-        <T is={$gltf.scene} />
+        <T.Group scale={0.01}>
+            <!-- Visual City -->
+            <T is={$gltf.scene} />
 
-        <!-- Solid Road / Terrain -->
-        {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-            <RigidBody type="fixed">
-                <T
-                    is={$gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-                    colliders="trimesh"
-                />
-            </RigidBody>
-        {/if}
+            <!-- Solid Road / Terrain (Legacy Position) -->
+            {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
+                <RigidBody type="fixed">
+                    <T
+                        is={$gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
+                        position={[0, 0.244, 0]}
+                        colliders="trimesh"
+                    />
+                </RigidBody>
+            {/if}
+        </T.Group>
     </T.Group>
 {/if}

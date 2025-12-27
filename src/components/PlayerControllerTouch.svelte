@@ -380,7 +380,7 @@
 
   $effect(() => {
     if (gameStore.resetSignal > 0) {
-      body.setTranslation({ x: 25, y: 10, z: -120 }, true);
+      body.setTranslation({ x: 8, y: 60, z: -119 }, true);
       body.setLinvel({ x: 0, y: 0, z: 0 }, true);
     }
   });
@@ -391,7 +391,7 @@
     <RigidBody
       bind:rigidBody={body}
       colliders={false}
-      position={[25, 10, -120]}
+      position={[8, 60, -119]}
       centerOfMass={[0, -1, 0]}
       mass={3}
       ccd
@@ -399,8 +399,8 @@
       type={player.id === gameStore.id ? "dynamic" : "kinematicPosition"}
     >
       <Collider
-        shape="ball"
-        args={[0.5]}
+        shape="cuboid"
+        args={[0.5, 0.5, 0.5]}
         mass={3}
         oncreate={(ref) => {}}
         oncollisionenter={() => {

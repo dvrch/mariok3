@@ -4,6 +4,7 @@
     import { backOut } from "svelte/easing";
 
     function handleRestart() {
+        console.log("🏎️ Manual Reset Requested from UI");
         gameStore.triggerReset();
     }
 </script>
