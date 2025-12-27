@@ -25,31 +25,20 @@
 
 {#if $gltf}
     <T.Group {position} scale={50} {...props}>
-        <T.Group scale={0.01}>
-            {#each Object.entries($gltf.nodes) as [name, node]}
-                {#if node.type === "Mesh" && name !== "ShadowCollision_M_Cmn_ShadowCollision_0"}
-                    <T.Mesh
-                        castShadow
-                        receiveShadow
-                        geometry={node.geometry}
-                        material={node.material}
-                        position={node.position}
-                        rotation={node.rotation}
-                        scale={node.scale}
-                    />
+        <T is={$gltf.scene} scale={0.01}>
+            {#snippet children({ ref })}
+                {@const collisionMesh =
+                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
+                {#if collisionMesh}
+                    <RigidBody type="fixed" collider="trimesh" name="terrain">
+                        <T.Mesh
+                            geometry={collisionMesh.geometry}
+                            material={$gltf.materials.M_Cmn_ShadowCollision}
+                            position={[0, 0.244, 0]}
+                        />
+                    </RigidBody>
                 {/if}
-            {/each}
-
-            <RigidBody type="fixed" colliders="trimesh" name="terrain">
-                <T.Mesh
-                    castShadow
-                    receiveShadow
-                    geometry={$gltf.nodes
-                        .ShadowCollision_M_Cmn_ShadowCollision_0.geometry}
-                    material={$gltf.materials.M_Cmn_ShadowCollision}
-                    position={[0, 0.244, 0]}
-                />
-            </RigidBody>
-        </T.Group>
+            {/snippet}
+        </T>
     </T.Group>
 {/if}
