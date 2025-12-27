@@ -223,7 +223,7 @@
     );
 
     const bodyPosition = body.translation();
-    kart.position.set(bodyPosition.x, bodyPosition.y - 0.5, bodyPosition.z);
+    kart.position.set(bodyPosition.x, bodyPosition.y - 25, bodyPosition.z);
 
     // Jumping
     if (jumpPressed && isOnGround && !jumpIsHeld) {
@@ -464,23 +464,27 @@
   <T.Group>
     <RigidBody
       bind:rigidBody={body}
-      colliders="ball"
+      colliders={false}
       position={[8, 60, -119]}
-      centerOfMass={[0, -1, 0]}
+      centerOfMass={[0, -25, 0]}
       mass={3}
       ccd
       name="player"
       type={player.id === gameStore.id ? "dynamic" : "kinematicPosition"}
-      oncollisionenter={() => {
-        isOnFloor = true;
-        isOnGround = true;
-      }}
-      oncollisionexit={() => {
-        isOnFloor = false;
-        isOnGround = false;
-      }}
     >
-      <!-- Visuals and camera moved inside or handled via refs -->
+      <Collider
+        shape="ball"
+        args={[25]}
+        mass={3}
+        oncollisionenter={() => {
+          isOnFloor = true;
+          isOnGround = true;
+        }}
+        oncollisionexit={() => {
+          isOnFloor = false;
+          isOnGround = false;
+        }}
+      />
     </RigidBody>
 
     <T.Group bind:ref={kart} rotation={[0, Math.PI / 2, 0]}>
@@ -490,6 +494,7 @@
           {steeringAngleWheels}
           {isBoosting}
           {shouldLaunch}
+          scale={50}
         />
         <CoinParticles coins={gameStore.coins} />
         <ItemParticles item={gameStore.item} />

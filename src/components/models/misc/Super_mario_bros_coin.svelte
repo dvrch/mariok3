@@ -13,7 +13,7 @@
     });
     let body = $state<any>();
     let mesh = $state<THREE.Mesh>();
-    let scale = $state(0.424);
+    let scale = $state(21.2); // 0.424 * 50
     let frames = 0;
 
     useTask((delta) => {
@@ -23,7 +23,7 @@
                 frames -= 1 * delta * 144;
             }
             if (frames <= 0) {
-                scale = Math.min(scale + 0.5 * delta, 0.424);
+                scale = Math.min(scale + 25 * delta, 21.2);
                 if (body) body.setEnabled(true);
             }
         }
