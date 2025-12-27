@@ -25,15 +25,17 @@
 
 {#if $gltf}
     <T.Group {position} scale={50} {...props}>
-        <RigidBody type="fixed" name="terrain">
+        <RigidBody type="fixed">
             <Collider
                 shape="trimesh"
                 args={[
-                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0
-                        .geometry,
+                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0.geometry
+                        .attributes.position.array,
+                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0.geometry
+                        .index.array,
                 ]}
             />
         </RigidBody>
-        <T is={$gltf.scene} scale={0.01} />
+        <T is={$gltf.scene} />
     </T.Group>
 {/if}

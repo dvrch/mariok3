@@ -42,7 +42,6 @@
     };
 </script>
 
-```typescript
 {#if $gltf}
     <RigidBody
         type="fixed"
