@@ -52,9 +52,9 @@
     >
         <Collider
             shape="cuboid"
-            args={[1.5, 1.5, 1.5]}
+            args={[75, 75, 75]}
             sensor
-            on:sensorenter={onIntersect}
+            onsensorenter={onIntersect}
         />
     </RigidBody>
 

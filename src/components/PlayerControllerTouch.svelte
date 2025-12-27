@@ -171,7 +171,7 @@
     );
 
     const bodyPosition = body.translation();
-    kart.position.set(bodyPosition.x, bodyPosition.y - 0.5, bodyPosition.z);
+    kart.position.set(bodyPosition.x, bodyPosition.y - 25, bodyPosition.z);
 
     // Jumping (using Drift Button)
     if (driftButton && isOnGround && !jumpIsHeld) {
@@ -392,7 +392,7 @@
       bind:rigidBody={body}
       colliders={false}
       position={[8, 60, -119]}
-      centerOfMass={[0, -1, 0]}
+      centerOfMass={[0, -25, 0]}
       mass={3}
       ccd
       name="player"
@@ -400,7 +400,7 @@
     >
       <Collider
         shape="ball"
-        args={[0.5]}
+        args={[25]}
         mass={3}
         oncreate={(ref) => {}}
         oncollisionenter={() => {
@@ -421,6 +421,7 @@
           {steeringAngleWheels}
           {isBoosting}
           {shouldLaunch}
+          scale={50}
         />
         <CoinParticles coins={gameStore.coins} />
         <ItemParticles item={gameStore.item} />

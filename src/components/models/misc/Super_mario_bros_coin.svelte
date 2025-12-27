@@ -43,11 +43,11 @@
     <RigidBody
         type="fixed"
         name="coin"
-        sensor
-        bind:ref={body}
-        on:intersectionEnter={onIntersect}
+        bind:rigidBody={body}
+        onintersectionenter={onIntersect}
         {position}
     >
+        <Collider shape="ball" args={[25]} sensor />
         <T.Mesh
             bind:ref={mesh}
             castShadow
