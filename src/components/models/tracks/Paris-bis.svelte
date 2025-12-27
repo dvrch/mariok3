@@ -28,6 +28,5 @@
         <RigidBody type="fixed">
             <T is={$gltf.scene} colliders="trimesh" />
         </RigidBody>
-        <T is={$gltf.scene} />
     </T.Group>
 {/if}
