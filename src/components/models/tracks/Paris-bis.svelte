@@ -1,12 +1,16 @@
 <script lang="ts">
     import { T } from "@threlte/core";
-    import { useGltf } from "@threlte/extras";
+    import { useGltf, useDraco } from "@threlte/extras";
     import { RigidBody } from "@threlte/rapier";
 
     let { position = [0, -3.6, 0], ...props } = $props();
 
+    const dracoLoader = useDraco(
+        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+    );
     const gltf = useGltf(
         "./models/tracks/tour_paris_promenade-transformed.glb",
+        { dracoLoader },
     );
 
     $effect(() => {

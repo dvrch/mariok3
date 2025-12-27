@@ -1,6 +1,6 @@
 <script lang="ts">
     import { T } from "@threlte/core";
-    import { useGltf } from "@threlte/extras";
+    import { useGltf, useDraco } from "@threlte/extras";
     import { Collider, RigidBody } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
 
@@ -11,8 +11,12 @@
         networkBananas?: any[];
     }>();
 
+    const dracoLoader = useDraco(
+        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+    );
     const gltf = useGltf(
         "./models/items/banana_peel_mario_kart-transformed.glb",
+        { dracoLoader },
     );
     let scale = 0.002;
 

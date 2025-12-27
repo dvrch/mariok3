@@ -1,6 +1,6 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
-    import { useGltf } from "@threlte/extras";
+    import { useGltf, useDraco } from "@threlte/extras";
     import { Collider, RigidBody } from "@threlte/rapier";
     import { onMount } from "svelte";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
@@ -14,7 +14,10 @@
         networkShells?: any[];
     }>();
 
-    const gltf = useGltf("./models/items/mario_shell_red.glb");
+    const dracoLoader = useDraco(
+        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+    );
+    const gltf = useGltf("./models/items/mario_shell_red.glb", { dracoLoader });
     let rigidBody = $state<any>();
     let mesh = $state<THREE.Mesh>();
 
@@ -61,7 +64,7 @@
             colliders={false}
             on:collisionEnter={onCollide}
         >
-        <Collider shape="ball" args={[0.5]} />
+            <Collider shape="ball" args={[0.5]} />
         </RigidBody>
         <T.Mesh
             bind:ref={mesh}

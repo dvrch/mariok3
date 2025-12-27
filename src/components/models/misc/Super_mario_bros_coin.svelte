@@ -7,7 +7,9 @@
 
     let { position = [0, 0, 0] } = $props();
 
-    const dracoLoader = useDraco("https://www.gstatic.com/draco/v1/decoders/");
+    const dracoLoader = useDraco(
+        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+    );
     const gltf = useGltf(
         "./models/misc/super_mario_bros_coin-transformed.glb",
         { dracoLoader },

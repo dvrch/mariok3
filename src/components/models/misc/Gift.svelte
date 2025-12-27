@@ -7,8 +7,7 @@
 
     let { position = [0, 0, 0] } = $props();
 
-    const dracoLoader = useDraco();
-    dracoLoader.setDecoderPath(
+    const dracoLoader = useDraco(
         "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
     );
     const gltf = useGltf("./models/misc/gift-transformed.glb", { dracoLoader });
