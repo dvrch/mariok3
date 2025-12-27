@@ -447,9 +447,9 @@
 
     // Safety net: Reset if falling too deep (Y < -20)
     const pos = body.translation();
-    if (pos.y < -20) {
+    if (pos.y < -500) {
       console.log("🛟 Safety Net Reset! pos.y:", pos.y);
-      body.setTranslation({ x: 25, y: 30, z: -120 }, true);
+      body.setTranslation({ x: 25, y: 10, z: -120 }, true);
       body.setLinvel({ x: 0, y: 0, z: 0 }, true);
     }
   });
@@ -460,7 +460,7 @@
     <RigidBody
       bind:rigidBody={body}
       colliders={false}
-      position={[25, 30, -120]}
+      position={[25, 10, -120]}
       centerOfMass={[0, -1, 0]}
       mass={3}
       ccd

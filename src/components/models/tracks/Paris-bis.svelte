@@ -1,8 +1,7 @@
 <script lang="ts">
     import { T } from "@threlte/core";
-    import { useGltf, useDraco } from "@threlte/extras";
-    import { RigidBody, Collider } from "@threlte/rapier";
-
+    import { useGltf } from "@threlte/extras";
+    import { RigidBody } from "@threlte/rapier";
     import { dracoLoader } from "../../../lib/loaders/draco";
 
     let { position = [0, -3.6, 0], ...props } = $props();
@@ -24,9 +23,9 @@
 </script>
 
 {#if $gltf}
-    <T.Group {position} scale={50} {...props}>
-        <RigidBody type="fixed">
+    <RigidBody type="fixed" {position}>
+        <T.Group scale={50} {...props}>
             <T is={$gltf.scene} colliders="trimesh" />
-        </RigidBody>
-    </T.Group>
+        </T.Group>
+    </RigidBody>
 {/if}
