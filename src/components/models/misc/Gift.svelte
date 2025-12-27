@@ -43,20 +43,21 @@
 </script>
 
 {#if $gltf}
-    <RigidBody
-        type="fixed"
-        bind:rigidBody={body}
-        {position}
-        colliders={false}
-        userData={{ name: "gift" }}
-    >
-        <Collider
-            shape="cuboid"
-            args={[75, 75, 75]}
-            sensor
-            onsensorenter={onIntersect}
-        />
-    </RigidBody>
+    <T.Group {position}>
+        <RigidBody
+            type="fixed"
+            bind:rigidBody={body}
+            colliders={false}
+            name="gift"
+        >
+            <Collider
+                shape="cuboid"
+                args={[75, 75, 75]}
+                sensor
+                onsensorenter={onIntersect}
+            />
+        </RigidBody>
+    </T.Group>
 
     <T.Group bind:ref {position} {scale}>
         <T.Mesh

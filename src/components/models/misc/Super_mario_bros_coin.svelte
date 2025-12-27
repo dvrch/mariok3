@@ -40,21 +40,22 @@
 </script>
 
 {#if $gltf}
-    <RigidBody
-        type="fixed"
-        name="coin"
-        bind:rigidBody={body}
-        onintersectionenter={onIntersect}
-        {position}
-    >
-        <Collider shape="ball" args={[25]} sensor />
-        <T.Mesh
-            bind:ref={mesh}
-            castShadow
-            receiveShadow
-            geometry={$gltf.nodes.Coin_CoinBlinn_0.geometry}
-            material={$gltf.materials.CoinBlinn}
-            {scale}
-        />
-    </RigidBody>
+    <T.Group {position}>
+        <RigidBody type="fixed" name="coin" bind:rigidBody={body}>
+            <Collider
+                shape="ball"
+                args={[25]}
+                sensor
+                onsensorenter={onIntersect}
+            />
+            <T.Mesh
+                bind:ref={mesh}
+                castShadow
+                receiveShadow
+                geometry={$gltf.nodes.Coin_CoinBlinn_0.geometry}
+                material={$gltf.materials.CoinBlinn}
+                {scale}
+            />
+        </RigidBody>
+    </T.Group>
 {/if}

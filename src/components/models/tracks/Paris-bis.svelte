@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
-    import { RigidBody } from "@threlte/rapier";
+    import { RigidBody, AutoColliders } from "@threlte/rapier";
     import { dracoLoader } from "../../../lib/loaders/draco";
 
     let { position = [0, -3.6, 0], ...props } = $props();
@@ -31,11 +31,14 @@
 
             <!-- Solid Road / Terrain (Legacy Position) -->
             {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-                <RigidBody type="fixed" colliders="trimesh">
-                    <T
-                        is={$gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-                        position={[0, 0.244, 0]}
-                    />
+                <RigidBody type="fixed">
+                    <AutoColliders shape="trimesh">
+                        <T
+                            is={$gltf.nodes
+                                .ShadowCollision_M_Cmn_ShadowCollision_0}
+                            position={[0, 0.244, 0]}
+                        />
+                    </AutoColliders>
                 </RigidBody>
             {/if}
         </T.Group>
