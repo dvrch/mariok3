@@ -59,7 +59,12 @@
                 currentPoint = nextPointIdx;
             }
         } else {
-            // console.log("Animation skipped:", { started: gameStore.gameStarted, hasCam: !!cam, hasTarget: !!lookAtTarget, points: pointest.length });
+            console.log("Animation skipped:", {
+                started: gameStore.gameStarted,
+                hasCam: !!cam,
+                hasTarget: !!lookAtTarget,
+                points: pointest.length,
+            });
         }
     });
 
@@ -72,13 +77,14 @@
 
             if (Array.isArray(points)) {
                 console.log("Loaded points:", points.length);
-                pointest = points
+                const mappedPoints = points
                     .map((p: any) => ({
                         x: p.x * 50,
                         y: p.y * 50,
                         z: p.z * 50,
                     }))
                     .reverse();
+                pointest.push(...mappedPoints);
             } else {
                 console.warn(
                     "CurvedPath.json did not return a valid points array",
@@ -130,8 +136,8 @@
 {/if}
 
 <ParisBis position={[0, 0, 0]} />
-<ItemBox position={[-20, 2.5, -119]} />
-<Coin position={[-30, 2, -119]} />
+<!-- <ItemBox position={[-20, 2.5, -119]} />
+<Coin position={[-30, 2, -119]} /> -->
 
 <Ground position={[0, 0, 0]} />
 <Environment resolution={256} preset="lobby" />

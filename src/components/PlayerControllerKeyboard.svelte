@@ -100,8 +100,17 @@
       engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
     }
 
+    // Debugging controls
+    // console.log("Player:", player.id, "GameID:", gameStore.id, "Pressed:", $pressed);
+
+    if (player.id !== gameStore.id) return;
+    if (!body || !mario || !kart) return;
+
     // Controls
     const upPressed = $pressed.up;
+    if (upPressed || $pressed.down) {
+      console.log("Input detected!", { up: $pressed.up, down: $pressed.down });
+    }
     const downPressed = $pressed.down;
     const leftPressed = $pressed.left;
     const rightPressed = $pressed.right;

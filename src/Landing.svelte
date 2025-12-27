@@ -9,6 +9,7 @@
     let controlStyle = $state("");
 
     onMount(() => {
+        gameStore.gameStarted = false;
         if (setupStatus === 0) {
             const tl = gsap.timeline();
             if (logo && startButton) {

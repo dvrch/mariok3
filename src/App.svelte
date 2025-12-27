@@ -34,6 +34,12 @@
                 gameStore.removePlayer(state);
             });
         });
+
+        // Force reset AFTER Playroomkit initialization
+        setTimeout(() => {
+            gameStore.gameStarted = false;
+            console.log("🎮 Game state reset to NOT STARTED");
+        }, 100);
     });
 </script>
 
