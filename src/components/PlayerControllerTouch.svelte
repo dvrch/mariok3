@@ -399,8 +399,8 @@
       type={player.id === gameStore.id ? "dynamic" : "kinematicPosition"}
     >
       <Collider
-        shape="cuboid"
-        args={[0.5, 0.5, 0.5]}
+        shape="ball"
+        args={[0.5]}
         mass={3}
         oncreate={(ref) => {}}
         oncollisionenter={() => {

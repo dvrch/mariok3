@@ -32,10 +32,18 @@
             <!-- Solid Road / Terrain (Legacy Position) -->
             {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
                 <RigidBody type="fixed">
-                    <T
-                        is={$gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-                        position={[0, 0.244, 0]}
-                        colliders="trimesh"
+                    <Collider
+                        shape="trimesh"
+                        args={[
+                            (
+                                $gltf.nodes
+                                    .ShadowCollision_M_Cmn_ShadowCollision_0 as any
+                            ).geometry.attributes.position.array,
+                            (
+                                $gltf.nodes
+                                    .ShadowCollision_M_Cmn_ShadowCollision_0 as any
+                            ).geometry.index.array,
+                        ]}
                     />
                 </RigidBody>
             {/if}
