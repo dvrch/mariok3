@@ -88,6 +88,10 @@
   });
 
   useTask((delta) => {
+    // Clamp delta to prevent physics explosion
+    const safeDelta = Math.min(delta, 0.015);
+    const dt = safeDelta * 144; // use this scaled delta for everything
+
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return; // cam might be null initially
 
@@ -144,21 +148,15 @@
     const shouldSlow = gameStore.shouldSlowDown;
 
     if (upPressed && currentSpeed < maxSpeed) {
-      currentSpeed = Math.min(
-        currentSpeed + acceleration * delta * 144,
-        maxSpeed,
-      );
+      currentSpeed = Math.min(currentSpeed + acceleration * dt, maxSpeed);
     } else if (upPressed && currentSpeed > maxSpeed && effectiveBoost > 0) {
-      currentSpeed = Math.max(
-        currentSpeed - decceleration * delta * 144,
-        maxSpeed,
-      );
+      currentSpeed = Math.max(currentSpeed - decceleration * dt, maxSpeed);
     }
 
     if (upPressed) {
       if (currentSteeringSpeed < MaxSteeringSpeed) {
         currentSteeringSpeed = Math.min(
-          currentSteeringSpeed + 0.0001 * delta * 144,
+          currentSteeringSpeed + 0.0001 * dt,
           MaxSteeringSpeed,
         );
       }
@@ -166,10 +164,7 @@
 
     if (shouldSlow) {
       // rightWheel spinning logic?
-      currentSpeed = Math.max(
-        currentSpeed - decceleration * 2 * delta * 144,
-        0,
-      );
+      currentSpeed = Math.max(currentSpeed - decceleration * 2 * dt, 0);
       currentSteeringSpeed = 0;
       slowDownDuration -= 1500 * delta;
       shouldLaunch = true;
@@ -184,44 +179,36 @@
     if (downPressed) {
       if (currentSteeringSpeed < MaxSteeringSpeed) {
         currentSteeringSpeed = Math.min(
-          currentSteeringSpeed + 0.0001 * delta * 144,
+          currentSteeringSpeed + 0.0001 * dt,
           MaxSteeringSpeed,
         );
       }
     }
 
     if (downPressed && currentSpeed <= 0) {
-      currentSpeed = Math.max(
-        currentSpeed - acceleration * delta * 144,
-        -maxSpeed,
-      );
+      currentSpeed = Math.max(currentSpeed - acceleration * dt, -maxSpeed);
     }
     // Decelerating
     else if (!upPressed) {
       if (currentSteeringSpeed > 0) {
-        currentSteeringSpeed = Math.max(
-          currentSteeringSpeed - 0.00005 * delta * 144,
-          0,
-        );
+        currentSteeringSpeed = Math.max(currentSteeringSpeed - 0.00005 * dt, 0);
       } else if (currentSteeringSpeed < 0) {
-        currentSteeringSpeed = Math.min(
-          currentSteeringSpeed + 0.00005 * delta * 144,
-          0,
-        );
+        currentSteeringSpeed = Math.min(currentSteeringSpeed + 0.00005 * dt, 0);
       }
-      currentSpeed = Math.max(currentSpeed - decceleration * delta * 144, 0);
+      currentSpeed = Math.max(currentSpeed - decceleration * dt, 0);
     }
 
     // Move Kart
-    kart.rotation.y += steeringAngle * delta * 144;
+    kart.rotation.y += steeringAngle * dt;
 
     // Damping
     const linvel = body.linvel();
+
     body.applyImpulse(
       {
-        x: -linvel.x * (1 - damping) * delta * 144,
+        x: -linvel.x * (1 - damping) * dt,
         y: 0,
-        z: -linvel.z * (1 - damping) * delta * 144,
+        z: -linvel.z * (1 - damping) * dt,
       },
       true,
     );
@@ -245,7 +232,7 @@
       if (landingSound && !landingSound.isPlaying) landingSound.play();
     }
     if (!isOnGround && jumpForce > 0) {
-      jumpForce -= 1 * delta * 144;
+      jumpForce -= 1 * dt;
     }
     if (!jumpPressed) {
       jumpIsHeld = false;
@@ -276,11 +263,7 @@
     }
 
     if (!jumpIsHeld && !driftLeft && !driftRight) {
-      mario.rotation.y = THREE.MathUtils.lerp(
-        mario.rotation.y,
-        0,
-        0.0001 * delta * 144,
-      );
+      mario.rotation.y = THREE.MathUtils.lerp(mario.rotation.y, 0, 0.0001 * dt);
       turboColor = 0xffffff;
       accumulatedDriftPower = 0;
       if (driftSound && driftSound.isPlaying) driftSound.stop();
@@ -297,10 +280,10 @@
       mario.rotation.y = THREE.MathUtils.lerp(
         mario.rotation.y,
         steeringAngle * 25 + 0.4,
-        0.05 * delta * 144,
+        0.05 * dt,
       );
       if (isOnFloor) {
-        accumulatedDriftPower += 0.1 * (steeringAngle + 1) * delta * 144;
+        accumulatedDriftPower += 0.1 * (steeringAngle + 1) * dt;
       }
     }
     if (driftRight) {
@@ -309,10 +292,10 @@
       mario.rotation.y = THREE.MathUtils.lerp(
         mario.rotation.y,
         -(-steeringAngle * 25 + 0.4),
-        0.05 * delta * 144,
+        0.05 * dt,
       );
       if (isOnFloor) {
-        accumulatedDriftPower += 0.1 * (-steeringAngle + 1) * delta * 144;
+        accumulatedDriftPower += 0.1 * (-steeringAngle + 1) * dt;
       }
     }
 
@@ -320,7 +303,7 @@
       mario.rotation.y = THREE.MathUtils.lerp(
         mario.rotation.y,
         steeringAngle * 30,
-        0.05 * delta * 144,
+        0.05 * dt,
       );
       scale = 0;
     }
@@ -374,7 +357,7 @@
 
     if (isBoosting && effectiveBoost > 1) {
       currentSpeed = boostSpeed;
-      effectiveBoost -= 1 * delta * 144;
+      effectiveBoost -= 1 * dt;
       targetZPosition = 10;
       if (turboSound && !turboSound.isPlaying) turboSound.play();
       if (driftTwoSound) driftTwoSound.play();
@@ -393,21 +376,21 @@
       cam.position.x = THREE.MathUtils.lerp(
         cam.position.x,
         targetXPosition,
-        0.01 * delta * 144,
+        0.01 * dt,
       );
       cam.position.z = THREE.MathUtils.lerp(
         cam.position.z,
         targetZPosition,
-        0.01 * delta * 144,
+        0.01 * dt,
       );
     }
 
     // Apply physics impulse
     body.applyImpulse(
       {
-        x: forwardDirection.x * currentSpeed * delta * 144,
-        y: jumpForce * delta * 144,
-        z: forwardDirection.z * currentSpeed * delta * 144,
+        x: forwardDirection.x * currentSpeed * dt,
+        y: jumpForce * dt,
+        z: forwardDirection.z * currentSpeed * dt,
       },
       true,
     );

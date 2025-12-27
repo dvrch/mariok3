@@ -58,6 +58,8 @@
             if (cam.position.distanceTo(targetPoint) < 5) {
                 currentPoint = nextPointIdx;
             }
+        } else {
+            // console.log("Animation skipped:", { started: gameStore.gameStarted, hasCam: !!cam, hasTarget: !!lookAtTarget, points: pointest.length });
         }
     });
 
@@ -69,6 +71,7 @@
             const points = Array.isArray(data) ? data : data.points;
 
             if (Array.isArray(points)) {
+                console.log("Loaded points:", points.length);
                 pointest = points
                     .map((p: any) => ({
                         x: p.x * 50,
