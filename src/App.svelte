@@ -9,6 +9,8 @@
     import Experience from "./components/Experience.svelte";
     import * as THREE from "three";
 
+    import SceneSetup from "./components/SceneSetup.svelte";
+
     const map = [
         { name: "up", keys: ["KeyW", "ArrowUp"] },
         { name: "down", keys: ["KeyS", "ArrowDown"] },
@@ -36,6 +38,7 @@
 </script>
 
 <Canvas dpr={1} toneMapping={THREE.AgXToneMapping}>
+    <SceneSetup />
     <World gravity={[0, -90, 0]}>
         <AudioListener />
         <KeyboardControls {map}>

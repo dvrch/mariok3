@@ -5,7 +5,9 @@
 
     let { position = [0, -3.6, 0], ...props } = $props();
 
-    const gltf = useGltf("./models/tracks/paris-bis.glb");
+    const gltf = useGltf(
+        "./models/tracks/tour_paris_promenade-transformed.glb",
+    );
 
     $effect(() => {
         if ($gltf) {

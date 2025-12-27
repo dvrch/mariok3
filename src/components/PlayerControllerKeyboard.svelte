@@ -17,8 +17,7 @@
 
   let { player, userPlayer } = $props();
 
-  const { up, down, left, right, jump, shoot, reset, escape } =
-    useKeyboardControls();
+  const pressed = useKeyboardControls();
   const { camera } = useThrelte();
 
   // Refs
@@ -102,14 +101,14 @@
     }
 
     // Controls
-    const upPressed = $up;
-    const downPressed = $down;
-    const leftPressed = $left;
-    const rightPressed = $right;
-    const jumpPressed = $jump;
-    const shootPressed = $shoot;
-    const resetPressed = $reset;
-    const escPressed = $escape;
+    const upPressed = $pressed.up;
+    const downPressed = $pressed.down;
+    const leftPressed = $pressed.left;
+    const rightPressed = $pressed.right;
+    const jumpPressed = $pressed.jump;
+    const shootPressed = $pressed.shoot;
+    const resetPressed = $pressed.reset;
+    const escPressed = $pressed.escape;
 
     // Handling
     const kartRotation = kart.rotation.y - driftDirection * driftForce;

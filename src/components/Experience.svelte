@@ -144,9 +144,10 @@
     <Shell id={shell.id} position={shell.position} rotation={shell.rotation} />
 {/each}
 
+<T.AmbientLight intensity={2} />
 <T.DirectionalLight
     position={[10, 50, -30]}
-    intensity={1}
+    intensity={5}
     castShadow
     shadow.bias={-0.0001}
     shadow.mapSize={[4096, 4096]}
