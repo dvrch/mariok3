@@ -25,7 +25,7 @@
 {#if $gltf}
     <!-- Unified Scale: 50 (to match Experience map scaling) -->
     <T.Group {position} scale={50} {...props}>
-        <T.Group>
+        <T.Group scale={0.01}>
             <!-- Visual City -->
             <T is={$gltf.scene} />
 
@@ -44,3 +44,4 @@
         </T.Group>
     </T.Group>
 {/if}
+```

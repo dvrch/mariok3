@@ -11,13 +11,13 @@
     const gltf = useGltf("/models/misc/gift-transformed.glb", { dracoLoader });
     let ref = $state<THREE.Group>();
     let body = $state<any>();
-    let scale = $state(30); // 0.6 * 50
+    let scale = $state(0.6); // Legacy
     let frames = 0;
 
     useTask((delta) => {
         if (ref) {
             const time = performance.now() / 1000;
-            ref.position.y = Math.sin(time) * 5 + 11; // 0.1 * 50 + offset
+            ref.position.y = Math.sin(time) * 0.1 + 2.5; // Legacy bobbing
             ref.rotation.x = Math.sin(time) * 0.1;
             ref.rotation.y += delta;
             ref.rotation.z = Math.sin(time) * 0.5;
