@@ -57,10 +57,12 @@
                 pointest[nextPointIdx].z,
             );
 
-            lookAtTarget.position.lerp(lookAtPoint, delta * speedFactor);
-            cam.lookAt(lookAtTarget.position);
+            _target.position.lerp(lookAtPoint, delta * speedFactor);
+            if (_cam && _target) {
+                _cam.lookAt(_target.position);
+            }
 
-            if (cam.position.distanceTo(targetPoint) < 5) {
+            if (_cam.position.distanceTo(targetPoint) < 5) {
                 currentPoint = nextPointIdx;
             }
         } else if (gameStore.introAnimationPlaying) {
@@ -145,11 +147,11 @@
 {/if}
 
 <ParisBis position={[0, 0, 0]} />
-<ItemBox position={[-20, 3, -119]} scale={[1.5, 1.5, 1.5]} />
+<ItemBox position={[-20, 3, -119]} />
 <Coin position={[-30, 2.7, -119]} />
 
 <Ground position={[0, 0, 0]} />
-<Environment preset="lobby" />
+<Environment />
 
 {#each networkBananas as banana (banana.id)}
     <Banana position={banana.position} id={banana.id} />

@@ -10,6 +10,7 @@
     import * as THREE from "three";
 
     import SceneSetup from "./components/SceneSetup.svelte";
+    import FallUI from "./components/UI/FallUI.svelte";
 
     const map = [
         { name: "up", keys: ["KeyW", "ArrowUp"] },
@@ -48,6 +49,8 @@
         </KeyboardControls>
     </World>
 </Canvas>
+
+<FallUI />
 
 <style>
     :global(canvas) {
