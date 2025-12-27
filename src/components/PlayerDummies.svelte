@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
     import { Billboard, Text } from "@threlte/extras";
-    import { BallCollider, RigidBody } from "@threlte/rapier";
+    import { Collider, RigidBody } from "@threlte/rapier";
     import * as THREE from "three";
     import { gameStore } from "../lib/state/gameStore.svelte";
     import Mario from "./models/characters/Mario_kart.svelte";
@@ -45,7 +45,7 @@
 
 {#if player.id !== gameStore.id}
     <RigidBody bind:ref={body} type="kinematicPosition" colliders={false}>
-        <BallCollider args={[0.5]} />
+        <Collider shape="ball" args={[0.5]} />
     </RigidBody>
 
     <T.Group bind:ref={kart}>

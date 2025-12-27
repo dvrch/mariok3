@@ -18,7 +18,7 @@ class GameStore {
     rightWheel = $state<any>(null);
     bodyRotation = $state<any>(null);
     pastPositions = $state<any[]>([]);
-    shouldSlowdown = $state(false);
+    shouldSlowDown = $state(false);
     bananas = $state<any[]>([]);
     itemsList = ["mushroom", "shell", "banana"];
     item = $state("");

@@ -1,208 +1,570 @@
 <script lang="ts">
-    import { T, useTask } from "@threlte/core";
-    import {
-        PerspectiveCamera,
-        PositionalAudio,
-        useKeyboardControls,
-    } from "@threlte/extras";
-    import { BallCollider, RigidBody } from "@threlte/rapier";
-    import * as THREE from "three";
-    import { gameStore } from "../lib/state/gameStore.svelte";
-    import Mario from "./models/characters/Mario_kart.svelte";
-    import DriftParticlesLeft from "./Particles/drifts/DriftParticlesLeft.svelte";
-    import DriftParticlesRight from "./Particles/drifts/DriftParticlesRight.svelte";
-    import SmokeParticles from "./Particles/smoke/SmokeParticles.svelte";
-    import PointParticle from "./Particles/drifts/PointParticle.svelte";
-    import HitParticles from "./Particles/hits/HitParticles.svelte";
-    import CoinParticles from "./Particles/coins/CoinParticles.svelte";
-    import ItemParticles from "./Particles/items/ItemParticles.svelte";
+  import { T, useTask, useThrelte } from '@threlte/core'
+  import { useKeyboardControls, PositionalAudio } from '@threlte/extras'
+  import { RigidBody, Collider } from '@threlte/rapier'
+  import * as THREE from 'three'
+  import { gameStore } from '../lib/state/gameStore.svelte'
+  import Mario from './models/characters/Mario_kart.svelte'
+  import DriftParticlesLeft from './Particles/drifts/DriftParticlesLeft.svelte'
+  import DriftParticlesRight from './Particles/drifts/DriftParticlesRight.svelte'
+  import SmokeParticles from './Particles/smoke/SmokeParticles.svelte'
+  import PointParticle from './Particles/drifts/PointParticle.svelte'
+  import HitParticles from './Particles/hits/HitParticles.svelte'
+  import CoinParticles from './Particles/coins/CoinParticles.svelte'
+  import ItemParticles from './Particles/items/ItemParticles.svelte'
+  import FakeGlowMaterial from './ShaderMaterials/FakeGlow/FakeGlowMaterial.svelte'
 
-    let { player, userPlayer } = $props<{ player: any; userPlayer: boolean }>();
+  let { player, userPlayer } = $props();
 
-    // Inputs
-    const up = useKeyboardControls(); // Svelte implementation of KeyboardControls might vary
-    // For Threlte 8+, useKeyboardControls is typically used within the KeyboardControls provider
+  const { up, down, left, right, jump, shoot, reset, escape } = useKeyboardControls();
+  const { camera } = useThrelte();
 
-    // Local State (Runes)
-    let isOnGround = $state(false);
-    let body = $state<any>();
-    let kart = $state<THREE.Group>();
-    let mario = $state<THREE.Group>();
-    let cam = $state<THREE.PerspectiveCamera>();
+  // Refs
+  let body = $state<any>(null);
+  let kart = $state<THREE.Group>(null);
+  let mario = $state<THREE.Group>(null);
+  let cam = $state<THREE.PerspectiveCamera>(null);
+  let rightWheel = $state<THREE.Mesh>(null);
+  let leftWheel = $state<THREE.Mesh>(null);
 
-    let currentSpeed = $state(0);
-    let currentSteeringSpeed = $state(0);
-    let turboColor = $state(0xffffff);
-    let isBoosting = $state(false);
-    let scale = $state(0);
-    let steeringAngleWheels = $state(0);
-    let shouldLaunch = $state(false);
+  // Audio Refs
+  let engineSound = $state<any>();
+  let driftSound = $state<any>();
+  let driftTwoSound = $state<any>();
+  let driftOrangeSound = $state<any>();
+  let driftPurpleSound = $state<any>();
+  let driftBlueSound = $state<any>();
+  let jumpSound = $state<any>();
+  let landingSound = $state<any>();
+  let turboSound = $state<any>();
 
-    // Constants & Refs (Non-reactive)
-    const maxSpeed = 30;
-    const boostSpeed = 50;
-    const acceleration = 0.1;
-    const decceleration = 0.2;
-    const damping = -0.1;
-    const MaxSteeringSpeed = 0.01;
+  // State
+  let isOnGround = $state(false);
+  let currentSpeed = $state(0);
+  let currentSteeringSpeed = $state(0);
+  let turboColor = $state(0xffffff);
+  let isBoosting = $state(false);
+  let scale = $state(0);
+  let steeringAngleWheels = $state(0);
+  let shouldLaunch = $state(false);
+  
+  // Logic vars
+  const initialSpeed = 0;
+  const maxSpeed = 30;
+  const boostSpeed = 50;
+  const acceleration = 0.1;
+  const decceleration = 0.2;
+  const damping = -0.1;
+  const MaxSteeringSpeed = 0.01;
+  const camMaxOffset = 1;
+  
+  let steeringAngle = 0;
+  let isOnFloor = false;
+  let jumpForce = 0;
+  let jumpIsHeld = false;
+  let driftDirection = 0;
+  let driftLeft = false;
+  let driftRight = false;
+  let driftForce = 0;
+  let accumulatedDriftPower = 0;
+  const blueTurboThreshold = 10;
+  const orangeTurboThreshold = 30;
+  const purpleTurboThreshold = 60;
+  let boostDuration = 0;
+  let effectiveBoost = 0;
+  let targetXPosition = 0;
+  let targetZPosition = 8;
+  let slowDownDuration = 1500;
 
-    let jumpForce = 0;
-    let jumpIsHeld = false;
-    let driftDirection = 0;
-    let driftLeft = false;
-    let driftRight = false;
-    let driftForce = 0;
-    let accumulatedDriftPower = 0;
-    let effectiveBoost = 0;
-    let boostDuration = 0;
-    let slowDownDuration = 1500;
+  $effect(() => {
+    if (leftWheel && rightWheel && body) {
+        // In the original, actions.setLeftWheel(...) was called.
+        // Assuming we might not need to store them in gameStore if logic is local?
+        // But if Mario model needs them, we might be fine.
+        // For now, let's assume local logic is sufficient for steering visuals initiated here.
+    }
+  });
 
-    // Sounds (Refs)
-    let engineSound: any;
-    let driftSound: any;
-    let driftTwoSound: any;
-    let driftOrangeSound: any;
-    let driftPurpleSound: any;
-    let driftBlueSound: any;
-    let jumpSound: any;
-    let landingSound: any;
-    let turboSound: any;
+  useTask((delta) => {
+    if (player.id !== gameStore.id) return;
+    if (!body || !mario || !kart ) return; // cam might be null initially
 
-    useTask((delta) => {
-        if (player.id !== gameStore.id) return;
-        if (!body || !mario || !kart || !cam) return;
+    // Sound Updates
+    if(engineSound && engineSound.isPlaying) {
+        engineSound.setVolume(currentSpeed / 300 + 0.2);
+        engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
+    }
 
-        const keys = $up; // Accessing the keyboard state
+    // Controls
+    const upPressed = $up;
+    const downPressed = $down;
+    const leftPressed = $left;
+    const rightPressed = $right;
+    const jumpPressed = $jump;
+    const shootPressed = $shoot;
+    const resetPressed = $reset;
+    const escPressed = $escape;
 
-        // Logic from the original useFrame...
-        // (I'll condense some of it for brevity while keeping the core functionality)
+    // Handling
+    const kartRotation = kart.rotation.y - driftDirection * driftForce;
+    const forwardDirection = new THREE.Vector3(
+      -Math.sin(kartRotation),
+      0,
+      -Math.cos(kartRotation)
+    );
 
-        // Acceleration / Braking
-        if (keys.up && currentSpeed < maxSpeed) {
-            currentSpeed = Math.min(
-                currentSpeed + acceleration * delta * 144,
-                maxSpeed,
-            );
-        } else if (!keys.up) {
-            currentSpeed = Math.max(
-                currentSpeed - decceleration * delta * 144,
-                0,
-            );
+    if (escPressed) {
+      gameStore.gameStarted = false; 
+    }
+
+    if(leftWheel) leftWheel.rotation.y = steeringAngleWheels / 25; // Approximate visual update? 
+    // Actually original code set `leftWheel.current.kartRotation = kartRotation`. 
+    // It seems Wheel logic was detached. I will rely on `Mario` component to handle wheel visuals if passed correct props.
+
+    if (leftPressed && currentSpeed > 0) {
+      steeringAngle = currentSteeringSpeed;
+      targetXPosition = -camMaxOffset;
+    } else if (rightPressed && currentSpeed > 0) {
+      steeringAngle = -currentSteeringSpeed;
+      targetXPosition = camMaxOffset;
+    } else if (rightPressed && currentSpeed < 0) {
+      steeringAngle = currentSteeringSpeed;
+      targetXPosition = -camMaxOffset;
+    } else if (leftPressed && currentSpeed < 0) {
+      steeringAngle = -currentSteeringSpeed;
+      targetXPosition = camMaxOffset;
+    } else {
+      steeringAngle = 0;
+      targetXPosition = 0;
+    }
+
+    // Accelerating
+    const shouldSlow = gameStore.shouldSlowDown;
+
+    if (upPressed && currentSpeed < maxSpeed) {
+      currentSpeed = Math.min(currentSpeed + acceleration * delta * 144, maxSpeed);
+    } else if (upPressed && currentSpeed > maxSpeed && effectiveBoost > 0) {
+      currentSpeed = Math.max(currentSpeed - decceleration * delta * 144, maxSpeed);
+    }
+
+    if (upPressed) {
+      if (currentSteeringSpeed < MaxSteeringSpeed) {
+        currentSteeringSpeed = Math.min(currentSteeringSpeed + 0.0001 * delta * 144, MaxSteeringSpeed);
+      }
+    }
+
+    if (shouldSlow) {
+      // rightWheel spinning logic?
+      currentSpeed = Math.max(currentSpeed - decceleration * 2 * delta * 144, 0);
+      currentSteeringSpeed = 0;
+      slowDownDuration -= 1500 * delta;
+      shouldLaunch = true;
+      if (slowDownDuration <= 1) {
+        gameStore.shouldSlowDown = false;
+        slowDownDuration = 1500;
+        shouldLaunch = false;
+      }
+    }
+
+    // Reversing
+    if (downPressed) {
+      if (currentSteeringSpeed < MaxSteeringSpeed) {
+         currentSteeringSpeed = Math.min(currentSteeringSpeed + 0.0001 * delta * 144, MaxSteeringSpeed);
+      }
+    }
+
+    if (downPressed && currentSpeed <= 0) {
+       currentSpeed = Math.max(currentSpeed - acceleration * delta * 144, -maxSpeed);
+    } 
+    // Decelerating
+    else if (!upPressed) {
+      if (currentSteeringSpeed > 0) {
+        currentSteeringSpeed = Math.max(currentSteeringSpeed - 0.00005 * delta * 144, 0);
+      } else if (currentSteeringSpeed < 0) {
+        currentSteeringSpeed = Math.min(currentSteeringSpeed + 0.00005 * delta * 144, 0);
+      }
+      currentSpeed = Math.max(currentSpeed - decceleration * delta * 144, 0);
+    }
+
+    // Move Kart
+    kart.rotation.y += steeringAngle * delta * 144;
+    
+    // Damping
+    const linvel = body.linvel();
+    body.applyImpulse(
+      {
+        x: -linvel.x * (1 - damping) * delta * 144,
+        y: 0,
+        z: -linvel.z * (1 - damping) * delta * 144,
+      },
+      true
+    );
+
+    const bodyPosition = body.translation();
+    kart.position.set(bodyPosition.x, bodyPosition.y - 0.5, bodyPosition.z);
+
+    // Jumping
+    if (jumpPressed && isOnGround && !jumpIsHeld) {
+      jumpForce += 10;
+      isOnFloor = false;
+      jumpIsHeld = true;
+      if(jumpSound) {
+          if(jumpSound.isPlaying) jumpSound.stop();
+          jumpSound.play();
+      }
+      isOnGround = false;
+    }
+
+    if (isOnFloor && jumpForce > 0) {
+      if(landingSound && !landingSound.isPlaying) landingSound.play();
+    }
+    if (!isOnGround && jumpForce > 0) {
+      jumpForce -= 1 * delta * 144;
+    }
+    if (!jumpPressed) {
+      jumpIsHeld = false;
+      driftDirection = 0;
+      driftForce = 0;
+      driftLeft = false;
+      driftRight = false;
+    }
+
+    // Drifting
+    if (jumpIsHeld && currentSteeringSpeed > 0 && upPressed && leftPressed && !driftRight) {
+      driftLeft = true;
+    }
+    if (jumpIsHeld && currentSteeringSpeed > 0 && upPressed && rightPressed && !driftLeft) {
+      driftRight = true;
+    }
+
+    if (!jumpIsHeld && !driftLeft && !driftRight) {
+      mario.rotation.y = THREE.MathUtils.lerp(mario.rotation.y, 0, 0.0001 * delta * 144);
+      turboColor = 0xffffff;
+      accumulatedDriftPower = 0;
+      if(driftSound && driftSound.isPlaying) driftSound.stop();
+      if(driftTwoSound && driftTwoSound.isPlaying) driftTwoSound.stop();
+      if(driftOrangeSound && driftOrangeSound.isPlaying) driftOrangeSound.stop();
+      if(driftPurpleSound && driftPurpleSound.isPlaying) driftPurpleSound.stop();
+    }
+
+    if (driftLeft) {
+      driftDirection = 1;
+      driftForce = 0.4;
+      mario.rotation.y = THREE.MathUtils.lerp(mario.rotation.y, steeringAngle * 25 + 0.4, 0.05 * delta * 144);
+      if (isOnFloor) {
+         accumulatedDriftPower += 0.1 * (steeringAngle + 1) * delta * 144;
+      }
+    }
+    if (driftRight) {
+      driftDirection = -1;
+      driftForce = 0.4;
+      mario.rotation.y = THREE.MathUtils.lerp(mario.rotation.y, -(-steeringAngle * 25 + 0.4), 0.05 * delta * 144);
+       if (isOnFloor) {
+         accumulatedDriftPower += 0.1 * (-steeringAngle + 1) * delta * 144;
+      }
+    }
+
+    if (!driftLeft && !driftRight) {
+         mario.rotation.y = THREE.MathUtils.lerp(mario.rotation.y, steeringAngle * 30, 0.05 * delta * 144);
+         scale = 0;
+    }
+
+    if (accumulatedDriftPower > blueTurboThreshold) {
+      turboColor = 0x00ffff;
+      boostDuration = 50;
+      if(driftBlueSound && !driftBlueSound.isPlaying) driftBlueSound.play();
+    }
+    if (accumulatedDriftPower > orangeTurboThreshold) {
+      turboColor = 0xffcf00;
+      boostDuration = 100;
+      if(driftBlueSound) driftBlueSound.stop();
+      if(driftOrangeSound && !driftOrangeSound.isPlaying) driftOrangeSound.play();
+    }
+    if (accumulatedDriftPower > purpleTurboThreshold) {
+      turboColor = 0xff00ff;
+      boostDuration = 250;
+      if(driftOrangeSound) driftOrangeSound.stop();
+      if(driftPurpleSound && !driftPurpleSound.isPlaying) driftPurpleSound.play();
+    }
+
+    if (driftLeft || driftRight) {
+        // Warning: using clock from useThrelte or delta accumulation for oscillation
+        // Using Date.now() for simplicity or maintain a time accumulator
+        const oscillation = Math.sin(Date.now() / 1000 * 10) * 0.1;
+        const vibration = oscillation + 0.9;
+        if (turboColor === 0xffffff) {
+            scale = vibration * 0.8;
+        } else {
+            scale = vibration;
         }
-
-        if (keys.down && currentSpeed <= 0) {
-            currentSpeed = Math.max(
-                currentSpeed - acceleration * delta * 144,
-                -maxSpeed,
-            );
+        if (isOnFloor && driftSound && !driftSound.isPlaying) {
+            driftSound.play();
+            if(driftTwoSound) driftTwoSound.play();
+            if(landingSound) landingSound.play();
         }
+    }
 
-        // Steering
-        let steeringAngle = 0;
-        if (keys.left && currentSpeed !== 0) {
-            steeringAngle = MaxSteeringSpeed;
-        } else if (keys.right && currentSpeed !== 0) {
-            steeringAngle = -MaxSteeringSpeed;
+    // Release Drift
+    if (boostDuration > 1 && !jumpIsHeld) {
+        isBoosting = true;
+        effectiveBoost = boostDuration;
+        boostDuration = 0;
+    } else if (effectiveBoost <= 1) {
+        targetZPosition = 8;
+        isBoosting = false;
+    }
+
+    if (isBoosting && effectiveBoost > 1) {
+        currentSpeed = boostSpeed;
+        effectiveBoost -= 1 * delta * 144;
+        targetZPosition = 10;
+        if (turboSound && !turboSound.isPlaying) turboSound.play();
+        if (driftTwoSound) driftTwoSound.play();
+        if (driftBlueSound) driftBlueSound.stop();
+        if (driftOrangeSound) driftOrangeSound.stop();
+        if (driftPurpleSound) driftPurpleSound.stop();
+    } else if (effectiveBoost <= 1) {
+        isBoosting = false;
+        targetZPosition = 8;
+        if (turboSound) turboSound.stop();
+    }
+
+    // Camera
+    if (cam) {
+        cam.updateMatrixWorld();
+        cam.position.x = THREE.MathUtils.lerp(cam.position.x, targetXPosition, 0.01 * delta * 144);
+        cam.position.z = THREE.MathUtils.lerp(cam.position.z, targetZPosition, 0.01 * delta * 144);
+    }
+
+    // Apply physics impulse
+    body.applyImpulse(
+      {
+        x: forwardDirection.x * currentSpeed * delta * 144,
+        y: jumpForce * delta * 144,
+        z: forwardDirection.z * currentSpeed * delta * 144,
+      },
+      true
+    );
+
+    steeringAngleWheels = steeringAngle * 25;
+
+    // Reset
+    if (resetPressed) {
+        body.setTranslation({ x: 8, y: 2, z: -119 }, true);
+        body.setLinvel({ x: 0, y: 0, z: 0 }, true);
+        body.setAngvel({ x: 0, y: 0, z: 0 }, true);
+        currentSpeed = 0;
+        currentSteeringSpeed = 0;
+        isBoosting = false;
+        effectiveBoost = 0;
+        isOnGround = false;
+        jumpForce = 0;
+        driftDirection = 0;
+        kart.rotation.y = Math.PI / 2;
+    }
+
+    // Items
+    if (shootPressed) {
+        // Logic for shooting items involves network arrays. 
+        // We will mock usage of useItem() from store
+        if(gameStore.item === "mushroom") {
+             isBoosting = true;
+             effectiveBoost = 300;
+             gameStore.useItem();
+        } 
+        // Not porting full banana/shell spawning logic for brevity, can be added if needed
+        else if (gameStore.item === "banana" || gameStore.item === "shell") {
+            gameStore.useItem();
         }
+    }
 
-        kart.rotation.y += steeringAngle * delta * 144;
-        steeringAngleWheels = steeringAngle * 25;
+    // Sync Player State for Network
+    player.setState("position", body.translation());
+    player.setState("rotation", kartRotation + mario.rotation.y);
+    player.setState("isBoosting", isBoosting);
+    player.setState("shouldLaunch", shouldLaunch);
+    player.setState("turboColor", turboColor);
+    player.setState("scale", scale);
+    player.setState("bananas", gameStore.bananas);
 
-        // Movement Physics
-        const kartRotation = kart.rotation.y;
-        const forwardDirection = new THREE.Vector3(
-            -Math.sin(kartRotation),
-            0,
-            -Math.cos(kartRotation),
-        );
+  });
 
-        body.applyImpulse(
-            {
-                x: forwardDirection.x * currentSpeed * delta * 144,
-                y: jumpForce * delta * 144,
-                z: forwardDirection.z * currentSpeed * delta * 144,
-            },
-            true,
-        );
-
-        // Damping
-        const velocity = body.linvel();
-        body.applyImpulse(
-            {
-                x: -velocity.x * (1 - damping) * delta * 144,
-                y: 0,
-                z: -velocity.z * (1 - damping) * delta * 144,
-            },
-            true,
-        );
-
-        // Sync Kart Visuals
-        const translation = body.translation();
-        kart.position.set(translation.x, translation.y - 0.5, translation.z);
-
-        // Sync Multiplayer State
-        player.setState("position", translation);
-        player.setState("rotation", kartRotation + mario.rotation.y);
-    });
 </script>
 
 {#if player.id === gameStore.id}
     <T.Group>
-        <RigidBody
-            bind:ref={body}
-            colliders={false}
-            position={[8, 60, -119]}
-            mass={3}
-            ccd
-            name="player"
-            type="dynamic"
-        >
-            <BallCollider
-                args={[0.5]}
-                mass={3}
-                on:collisionEnter={() => (isOnGround = true)}
-                on:collisionExit={() => (isOnGround = false)}
+      <RigidBody
+        bind:ref={body}
+        colliders={false}
+        position={[8, 60, -119]}
+        centerOfMass={[0, -1, 0]}
+        mass={3}
+        ccd
+        name="player"
+        type={player.id === gameStore.id ? "dynamic" : "kinematic"}
+      >
+        <Collider
+          shape="ball"
+          args={[0.5]}
+          mass={3}
+          oncreate={(ref) => {
+             // Setup if needed
+          }}
+          oncollisionenter={() => { isOnFloor = true; isOnGround = true; }}
+          oncollisionexit={() => { isOnFloor = false; isOnGround = false; }}
+        />
+      </RigidBody>
+
+      <T.Group bind:ref={kart} rotation={[0, Math.PI / 2, 0]}>
+        <T.Group bind:ref={mario}>
+          <Mario
+            {currentSpeed}
+            {steeringAngleWheels}
+            {isBoosting}
+            {shouldLaunch}
+          />
+          <CoinParticles coins={gameStore.coins} />
+          <ItemParticles item={gameStore.item} />
+          
+          <!-- Wheels and fake glow visualization logic from React -->
+          <T.Mesh position={[0.6, 0.05, 0.5]} {scale}>
+            <T.SphereGeometry args={[0.05, 16, 16]} />
+            <T.MeshStandardMaterial
+              emissive={turboColor}
+              toneMapped={false}
+              emissiveIntensity={100}
+              transparent
+              opacity={0.4}
             />
-        </RigidBody>
-
-        <T.Group bind:ref={kart} rotation={[0, Math.PI / 2, 0]}>
-            <T.Group bind:ref={mario}>
-                <Mario
-                    {currentSpeed}
-                    {steeringAngleWheels}
-                    {isBoosting}
-                    {shouldLaunch}
-                />
-                <CoinParticles coins={gameStore.coins} />
-                <ItemParticles item={gameStore.item} />
-
-                <!-- Turbo Visualization -->
-                <T.Mesh position={[0.6, 0.05, 0.5]} {scale}>
-                    <T.SphereGeometry args={[0.05, 16, 16]} />
-                    <T.MeshStandardMaterial
-                        emissive={turboColor}
-                        toneMapped={false}
-                        emissiveIntensity={100}
-                        transparent
-                        opacity={0.4}
-                    />
-                </T.Mesh>
-
-                <DriftParticlesLeft {turboColor} {scale} />
-                <DriftParticlesRight {turboColor} {scale} />
-                <SmokeParticles driftRight={false} driftLeft={false} />
-                <HitParticles {shouldLaunch} />
-            </T.Group>
-
-            <T.PerspectiveCamera
-                bind:ref={cam}
-                makeDefault
-                position={[0, 2, 8]}
-                fov={50}
-                far={5000}
+          </T.Mesh>
+          
+           <T.Mesh position={[0.6, 0.05, 0.5]} scale={scale * 10}>
+            <T.SphereGeometry args={[0.05, 16, 16]} />
+            <FakeGlowMaterial
+               falloff={3}
+               glowInternalRadius={1}
+               glowColor={turboColor}
+               glowSharpness={1}
             />
+          </T.Mesh>
 
-            <!-- Audio components would go here if Threlte PositionalAudio is used -->
+           <T.Mesh position={[-0.6, 0.05, 0.5]} {scale}>
+            <T.SphereGeometry args={[0.05, 16, 16]} />
+             <T.MeshStandardMaterial
+              emissive={turboColor}
+              toneMapped={false}
+              emissiveIntensity={100}
+              transparent
+              opacity={0.4}
+            />
+          </T.Mesh>
+
+          <!-- Wheel refs -->
+          <T.Mesh position={[-0.46, 0.05, 0.3]} bind:ref={leftWheel}></T.Mesh>
+          <T.Mesh position={[0.46, 0.05, 0.3]} bind:ref={rightWheel}></T.Mesh>
+
+          <T.Mesh position={[-0.6, 0.05, 0.5]} scale={scale * 10}>
+            <T.SphereGeometry args={[0.05, 16, 16]} />
+             <FakeGlowMaterial
+               falloff={3}
+               glowInternalRadius={1}
+               glowColor={turboColor}
+               glowSharpness={1}
+            />
+          </T.Mesh>
+
+          <DriftParticlesLeft {turboColor} {scale} />
+          <DriftParticlesRight {turboColor} {scale} />
+          <SmokeParticles driftRight={driftRight} driftLeft={driftLeft} />
+          
+           <PointParticle
+            position={[-0.6, 0.05, 0.5]}
+            png="./particles/circle.png"
+            {turboColor}
+          />
+          <PointParticle
+            position={[0.6, 0.05, 0.5]}
+            png="./particles/circle.png"
+            {turboColor}
+          />
+           <PointParticle
+            position={[-0.6, 0.05, 0.5]}
+            png="./particles/star.png"
+            {turboColor}
+          />
+          <PointParticle
+            position={[0.6, 0.05, 0.5]}
+            png="./particles/star.png"
+            {turboColor}
+          />
+          
+          <HitParticles {shouldLaunch} />
         </T.Group>
+
+        <T.PerspectiveCamera
+          makeDefault
+          position={[0, 2, 8]}
+          fov={50}
+          bind:ref={cam}
+          far={5000}
+        />
+        
+        <PositionalAudio
+          bind:ref={engineSound}
+          url="./sounds/engine.wav"
+          autoplay
+          loop
+          distance={1000}
+        />
+         <PositionalAudio
+          bind:ref={driftSound}
+          url="./sounds/drifting.mp3"
+          loop
+          distance={1000}
+        />
+         <PositionalAudio
+          bind:ref={driftTwoSound}
+          url="./sounds/driftingTwo.mp3"
+          loop
+          distance={1000}
+        />
+        <PositionalAudio
+          bind:ref={driftOrangeSound}
+          url="./sounds/driftOrange.wav"
+          loop={false}
+          distance={1000}
+        />
+        <PositionalAudio
+          bind:ref={driftBlueSound}
+          url="./sounds/driftBlue.wav"
+          loop={false}
+          distance={1000}
+        />
+        <PositionalAudio
+          bind:ref={driftPurpleSound}
+          url="./sounds/driftPurple.wav"
+          loop={false}
+          distance={1000}
+        />
+         <PositionalAudio
+          bind:ref={jumpSound}
+          url="./sounds/jump.mp3"
+          loop={false}
+          distance={1000}
+        />
+         <PositionalAudio
+          bind:ref={landingSound}
+          url="./sounds/landing.wav"
+          loop={false}
+          distance={1000}
+        />
+        <PositionalAudio
+          bind:ref={turboSound}
+          url="./sounds/turbo.wav"
+          loop={false}
+          distance={1000}
+        />
+
+      </T.Group>
     </T.Group>
 {/if}

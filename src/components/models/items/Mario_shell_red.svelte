@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
-    import { BallCollider, RigidBody } from "@threlte/rapier";
+    import { Collider, RigidBody } from "@threlte/rapier";
     import { onMount } from "svelte";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import * as THREE from "three";
@@ -41,7 +41,7 @@
 
     const onCollide = ({ other }: any) => {
         if (other.rigidBodyObject.name === "player") {
-            gameStore.shouldSlowdown = true;
+            gameStore.shouldSlowDown = true;
             if (setNetworkShells && networkShells) {
                 setNetworkShells(networkShells.filter((s) => s.id !== id));
             } else {
@@ -61,7 +61,7 @@
             colliders={false}
             on:collisionEnter={onCollide}
         >
-            <BallCollider args={[0.5]} />
+        <Collider shape="ball" args={[0.5]} />
         </RigidBody>
         <T.Mesh
             bind:ref={mesh}

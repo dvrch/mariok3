@@ -3,31 +3,36 @@
   import { useTexture } from '@threlte/extras'
   import * as THREE from 'three'
 
-  let { position, png, turboColor } = $props();
+  let { position, item, color } = $props();
 
-  const texture = useTexture(png);
+  const texture = useTexture('./particles/circle_coin.png');
   let materialRef = $state<THREE.PointsMaterial>();
-  let size = $state(0);
+  let size = $state(1);
   let opacity = $state(1);
+  let currentColor = $state(color);
 
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
 
   $effect(() => {
     if (materialRef) {
-      materialRef.color.multiplyScalar(10);
+      materialRef.color.multiplyScalar(4);
     }
-    size = 0;
-    opacity = 1;
+  });
+
+  $effect(() => {
+    if (item) {
+        size = 0;
+        opacity = 1;
+    }
   });
 
   useTask((delta) => {
-    if (turboColor === 0xffffff) return;
     if (size < 5) {
-      size = Math.min(size + 0.3 * delta * 144, 5);
+      size = Math.min(size + 0.2 * delta * 144, 5);
     } else if (opacity > 0) {
-      opacity = Math.max(opacity - 0.2 * delta * 144, 0);
-      size = Math.max(size - 0.2 * delta * 144, 0);
+      opacity = Math.max(opacity - 0.1 * delta * 144, 0);
+      size = Math.max(size - 0.1 * delta * 144, 0);
     }
   });
 </script>
@@ -40,9 +45,9 @@
             alphaMap={$texture}
             transparent={true}
             depthWrite={false}
-            color={turboColor}
             {opacity}
             toneMapped={false}
+            color={currentColor}
         />
     </T.Points>
 {/if}

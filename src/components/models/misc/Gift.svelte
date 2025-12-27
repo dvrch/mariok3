@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
-    import { CuboidCollider, RigidBody } from "@threlte/rapier";
+    import { Collider, RigidBody } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import * as THREE from "three";
 
@@ -50,7 +50,7 @@
         {position}
         colliders={false}
     >
-        <CuboidCollider args={[1.5, 1.5, 1.5]} />
+        <Collider shape="cuboid" args={[1.5, 1.5, 1.5]} />
     </RigidBody>
 
     <T.Group bind:ref {position} {scale}>

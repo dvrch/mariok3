@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
-    import { BallCollider, RigidBody } from "@threlte/rapier";
+    import { Collider, RigidBody } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
 
     let { id, position, setNetworkBananas, networkBananas } = $props<{
@@ -18,7 +18,7 @@
 
     const onIntersect = ({ other }: any) => {
         if (other.rigidBodyObject.name === "player") {
-            gameStore.shouldSlowdown = true;
+            gameStore.shouldSlowDown = true;
             if (setNetworkBananas && networkBananas) {
                 setNetworkBananas(networkBananas.filter((b) => b.id !== id));
             } else {
@@ -37,7 +37,7 @@
         colliders={false}
         name="banana"
     >
-        <BallCollider args={[0.5]} />
+        <Collider shape="ball" args={[0.5]} />
     </RigidBody>
 
     <T.Group position={[position.x, position.y, position.z]} {scale}>

@@ -3,6 +3,7 @@
     import { World } from "@threlte/rapier";
     import { onMount } from "svelte";
     import { insertCoin, onPlayerJoin } from "playroomkit";
+    import { KeyboardControls } from "@threlte/extras";
     import { gameStore } from "./lib/state/gameStore.svelte";
     import Experience from "./components/Experience.svelte";
     import * as THREE from "three";
@@ -35,7 +36,9 @@
 
 <Canvas dpr={1} toneMapping={THREE.AgXToneMapping}>
     <World gravity={[0, -90, 0]}>
-        <Experience networkBananas={[]} networkShells={[]} />
+        <KeyboardControls {map}>
+            <Experience networkBananas={[]} networkShells={[]} />
+        </KeyboardControls>
     </World>
 </Canvas>
 
