@@ -45,13 +45,17 @@
 {#if $gltf}
     <RigidBody
         type="fixed"
-        sensor
-        bind:ref={body}
-        on:intersectionEnter={onIntersect}
+        bind:rigidBody={body}
         {position}
         colliders={false}
+        userData={{ name: "gift" }}
     >
-        <Collider shape="cuboid" args={[1.5, 1.5, 1.5]} />
+        <Collider
+            shape="cuboid"
+            args={[1.5, 1.5, 1.5]}
+            sensor
+            on:sensorenter={onIntersect}
+        />
     </RigidBody>
 
     <T.Group bind:ref {position} {scale}>
