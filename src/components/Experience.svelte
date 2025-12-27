@@ -66,8 +66,10 @@
         try {
             const resp = await fetch("./CurvedPath.json");
             const data = await resp.json();
-            if (Array.isArray(data)) {
-                pointest = data
+            const points = Array.isArray(data) ? data : data.points;
+
+            if (Array.isArray(points)) {
+                pointest = points
                     .map((p: any) => ({
                         x: p.x * 50,
                         y: p.y * 50,
@@ -75,7 +77,10 @@
                     }))
                     .reverse();
             } else {
-                console.warn("CurvedPath.json did not return an array", data);
+                console.warn(
+                    "CurvedPath.json did not return a valid points array",
+                    data,
+                );
             }
         } catch (e) {
             console.error("Failed to load path", e);

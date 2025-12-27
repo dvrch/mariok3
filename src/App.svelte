@@ -2,6 +2,7 @@
     import { Canvas } from "@threlte/core";
     import { World } from "@threlte/rapier";
     import { onMount } from "svelte";
+    import { AudioListener } from "@threlte/extras";
     import { insertCoin, onPlayerJoin } from "playroomkit";
     import KeyboardControls from "./components/KeyboardControls.svelte";
     import { gameStore } from "./lib/state/gameStore.svelte";
@@ -36,6 +37,7 @@
 
 <Canvas dpr={1} toneMapping={THREE.AgXToneMapping}>
     <World gravity={[0, -90, 0]}>
+        <AudioListener />
         <KeyboardControls {map}>
             <Experience networkBananas={[]} networkShells={[]} />
         </KeyboardControls>
