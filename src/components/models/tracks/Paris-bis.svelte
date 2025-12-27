@@ -25,19 +25,15 @@
 
 {#if $gltf}
     <T.Group {position} scale={50} {...props}>
-        <T is={$gltf.scene} scale={0.01}>
-            {#snippet children({ ref }: { ref: any })}
-                {@const collisionMesh =
-                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-                {#if collisionMesh}
-                    <RigidBody type="fixed" name="terrain">
-                        <Collider
-                            shape="trimesh"
-                            args={[collisionMesh.geometry]}
-                        />
-                    </RigidBody>
-                {/if}
-            {/snippet}
-        </T>
+        <RigidBody type="fixed" name="terrain">
+            <Collider
+                shape="trimesh"
+                args={[
+                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0
+                        .geometry,
+                ]}
+            />
+        </RigidBody>
+        <T is={$gltf.scene} scale={0.01} />
     </T.Group>
 {/if}

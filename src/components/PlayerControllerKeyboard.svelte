@@ -444,6 +444,14 @@
     player.setState("turboColor", turboColor);
     player.setState("scale", scale);
     player.setState("bananas", gameStore.bananas);
+
+    // Safety net: Reset if falling too deep (Y < -20)
+    const pos = body.translation();
+    if (pos.y < -20) {
+      body.setTranslation({ x: 0, y: 200, z: 0 }, true);
+      body.setLinvel({ x: 0, y: 0, z: 0 }, true);
+      console.log("🛟 Safety Net: Kart reset to spawn");
+    }
   });
 </script>
 
@@ -452,7 +460,7 @@
     <RigidBody
       bind:rigidBody={body}
       colliders={false}
-      position={[8, 60, -119]}
+      position={[0, 200, 0]}
       centerOfMass={[0, -1, 0]}
       mass={3}
       ccd
