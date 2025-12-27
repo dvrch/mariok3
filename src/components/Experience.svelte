@@ -86,7 +86,9 @@
                         z: p.z * 50,
                     }))
                     .reverse();
-                pointest.push(...mappedPoints);
+                // CRITICAL: Reassign to trigger Svelte reactivity, don't use push()
+                pointest = mappedPoints;
+                console.log("✅ Points assigned, animation should start");
             } else {
                 console.warn(
                     "CurvedPath.json did not return a valid points array",
@@ -138,8 +140,8 @@
 {/if}
 
 <ParisBis position={[0, 0, 0]} />
-<!-- <ItemBox position={[-20, 2.5, -119]} />
-<Coin position={[-30, 2, -119]} /> -->
+<ItemBox position={[-20, 2.5, -119]} />
+<Coin position={[-30, 2, -119]} />
 
 <Ground position={[0, 0, 0]} />
 <Environment resolution={256} preset="lobby" />
@@ -152,10 +154,11 @@
     <Shell id={shell.id} position={shell.position} rotation={shell.rotation} />
 {/each}
 
-<T.AmbientLight intensity={2} />
+<T.AmbientLight intensity={3} />
+<T.HemisphereLight intensity={1.5} groundColor={0xffffff} skyColor={0x87ceeb} />
 <T.DirectionalLight
     position={[10, 50, -30]}
-    intensity={5}
+    intensity={8}
     castShadow
     shadow.bias={-0.0001}
     shadow.mapSize={[4096, 4096]}

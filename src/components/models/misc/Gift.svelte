@@ -8,6 +8,9 @@
     let { position = [0, 0, 0] } = $props();
 
     const dracoLoader = useDraco();
+    dracoLoader.setDecoderPath(
+        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+    );
     const gltf = useGltf("./models/misc/gift-transformed.glb", { dracoLoader });
     let ref = $state<THREE.Group>();
     let body = $state<any>();

@@ -103,6 +103,7 @@
     // Debugging controls
     // console.log("Player:", player.id, "GameID:", gameStore.id, "Pressed:", $pressed);
 
+    // Safety checks
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return;
 

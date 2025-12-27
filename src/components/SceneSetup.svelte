@@ -5,6 +5,6 @@
     const { renderer } = useThrelte();
 
     onMount(() => {
-        renderer.setClearColor(0x000000, 0);
+        renderer.setClearColor(0xffffff, 1);
     });
 </script>
