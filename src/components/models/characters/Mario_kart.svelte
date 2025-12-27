@@ -6,10 +6,10 @@
     import gsap from "gsap";
 
     let {
-        currentSpeed,
-        steeringAngleWheels,
-        isBoosting,
-        shouldLaunch,
+        currentSpeed = 0,
+        steeringAngleWheels = 0,
+        isBoosting = false,
+        shouldLaunch = false,
         ...props
     } = $props();
 
@@ -54,7 +54,6 @@
     });
 </script>
 
-```ts
 {#if $gltf}
     <T.Group bind:ref={marioGroup} rotation={[0, Math.PI, 0]} {...props}>
         {#each Object.entries($gltf.nodes) as [name, node]}

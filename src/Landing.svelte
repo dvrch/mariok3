@@ -49,7 +49,6 @@
     const confirm = () => {
         if (controlStyle !== "") {
             gameStore.controls = controlStyle;
-            type={player.id === gameStore.id ? "dynamic" : "kinematicPosition"}
             gameStore.introAnimationPlaying = false; // Stop intro
             gameStore.gameStarted = true; // Start game
         }
@@ -112,7 +111,7 @@
                         onclick={() => (controlStyle = "mouseKeyboard")}
                     >
                         <img
-                            url="/sounds/drift.wav"ges/mousekeyboard.png"
+                            src="/images/mousekeyboard.png"
                             alt="mouse & keyboard"
                         />
                         <div class="article_label">

@@ -149,7 +149,7 @@
 <Coin position={[-30, 2, -119]} />
 
 <Ground position={[0, 0, 0]} />
-<Environment resolution={256} preset="lobby" />
+<Environment preset="lobby" />
 
 {#each networkBananas as banana (banana.id)}
     <Banana position={banana.position} id={banana.id} />

@@ -427,7 +427,7 @@
 {#if player.id === gameStore.id}
   <T.Group>
     <RigidBody
-      bind:ref={body}
+      bind:rigidBody={body}
       colliders={false}
       position={[8, 60, -119]}
       centerOfMass={[0, -1, 0]}
