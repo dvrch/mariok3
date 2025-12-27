@@ -30,12 +30,16 @@
 
     // Simulation of path animation when game not started
     useTask((delta) => {
+        const _cam = cam;
+        const _target = lookAtTarget;
+        const _points = pointest;
+
         if (
             gameStore.introAnimationPlaying &&
             !gameStore.gameStarted &&
-            cam &&
-            lookAtTarget &&
-            pointest.length > 0
+            _cam &&
+            _target &&
+            _points.length > 0
         ) {
             const speedFactor = 5;
             const targetPoint = new THREE.Vector3(
@@ -88,6 +92,7 @@
                     .reverse();
                 // CRITICAL: Reassign to trigger Svelte reactivity, don't use push()
                 pointest = mappedPoints;
+                currentPoint = 0; // Start from the beginning
                 console.log("✅ Points assigned, animation should start");
             } else {
                 console.warn(

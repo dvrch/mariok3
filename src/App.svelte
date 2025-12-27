@@ -3,7 +3,7 @@
     import { World } from "@threlte/rapier";
     import { onMount } from "svelte";
     import { AudioListener } from "@threlte/extras";
-    import { insertCoin, onPlayerJoin } from "playroomkit";
+    import { insertCoin, onPlayerJoin, myPlayer } from "playroomkit";
     import KeyboardControls from "./components/KeyboardControls.svelte";
     import { gameStore } from "./lib/state/gameStore.svelte";
     import Experience from "./components/Experience.svelte";
@@ -28,17 +28,23 @@
 
         onPlayerJoin((state) => {
             gameStore.addPlayer(state);
-            gameStore.id = state.id;
 
             state.onQuit(() => {
                 gameStore.removePlayer(state);
             });
         });
 
+        // Use myPlayer() to get the local player ID reliably
+        gameStore.id = myPlayer().id;
+
         // Force reset AFTER Playroomkit initialization
         setTimeout(() => {
             gameStore.gameStarted = false;
-            console.log("🎮 Game state reset to NOT STARTED");
+            gameStore.introAnimationPlaying = true;
+            console.log(
+                "🎮 Game state reset to NOT STARTED, Local ID:",
+                gameStore.id,
+            );
         }, 100);
     });
 </script>
