@@ -4,9 +4,10 @@
     import { RigidBody, AutoColliders } from "@threlte/rapier";
     import { dracoLoader } from "../../../lib/loaders/draco";
 
-    let { position = [0, -3.6, 0], ...props } = $props();
+    let { position = [0, -3.6, 0] as [number, number, number], ...props } =
+        $props();
 
-    const gltf = useGltf("/models/tracks/paris-bis-transformed.glb", {
+    const gltf = useGltf("/models/tracks/paris-bis.glb", {
         dracoLoader,
     });
 
@@ -22,19 +23,21 @@
 </script>
 
 {#if $gltf}
-    <!-- Unified Scale: 50 (to match Experience map scaling) -->
+    <!-- Legacy Scale Structure: 50 * 0.01 = 0.5 -->
     <T.Group {position} scale={50} {...props}>
         <T.Group scale={0.01}>
             <!-- Visual City -->
             <T is={$gltf.scene} />
 
-            <!-- Solid Road / Terrain (Legacy Position) -->
+            <!-- Solid Road / Terrain -->
             {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
                 <RigidBody type="fixed">
                     <AutoColliders shape="trimesh">
-                        <T
-                            is={$gltf.nodes
-                                .ShadowCollision_M_Cmn_ShadowCollision_0}
+                        <T.Mesh
+                            geometry={$gltf.nodes
+                                .ShadowCollision_M_Cmn_ShadowCollision_0
+                                .geometry}
+                            material={$gltf.materials.M_Cmn_ShadowCollision}
                             position={[0, 0.244, 0]}
                         />
                     </AutoColliders>
@@ -43,4 +46,3 @@
         </T.Group>
     </T.Group>
 {/if}
-```

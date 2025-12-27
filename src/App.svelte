@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Canvas } from "@threlte/core";
-    import { World } from "@threlte/rapier";
+    import { World, Debug } from "@threlte/rapier";
     import { onMount } from "svelte";
     import { AudioListener } from "@threlte/extras";
     import { insertCoin, onPlayerJoin, myPlayer } from "playroomkit";
@@ -42,7 +42,7 @@
 
 <Canvas dpr={1} toneMapping={THREE.AgXToneMapping}>
     <SceneSetup />
-    <World gravity={[0, -90, 0]}>
+    <World gravity={[0, -30, 0]}>
         <AudioListener />
         <KeyboardControls {map}>
             <Experience networkBananas={[]} networkShells={[]} />

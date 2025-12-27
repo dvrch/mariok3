@@ -15,7 +15,11 @@
   import ItemParticles from "./Particles/items/ItemParticles.svelte";
   import FakeGlowMaterial from "./ShaderMaterials/FakeGlow/FakeGlowMaterial.svelte";
 
-  let { player, userPlayer } = $props();
+  let {
+    player,
+    userPlayer,
+    position = [8, 2, -119] as [number, number, number],
+  } = $props();
 
   const pressed = useKeyboardControls();
   const { camera } = useThrelte();
@@ -408,7 +412,10 @@
 
     // Reset
     if (resetPressed) {
-      body.setTranslation({ x: 8, y: 2, z: -119 }, true);
+      body.setTranslation(
+        { x: position[0], y: position[1], z: position[2] },
+        true,
+      );
 
       body.setAngvel({ x: 0, y: 0, z: 0 }, true);
       currentSpeed = 0;
@@ -454,7 +461,10 @@
 
   $effect(() => {
     if (gameStore.resetSignal > 0) {
-      body.setTranslation({ x: 8, y: 60, z: -119 }, true);
+      body.setTranslation(
+        { x: position[0], y: position[1], z: position[2] },
+        true,
+      );
       body.setLinvel({ x: 0, y: 0, z: 0 }, true);
     }
   });
@@ -465,7 +475,7 @@
     <RigidBody
       bind:rigidBody={body}
       colliders={false}
-      position={[8, 60, -119]}
+      {position}
       centerOfMass={[0, -1, 0]}
       mass={3}
       ccd
@@ -477,10 +487,12 @@
         args={[0.5]}
         mass={3}
         oncollisionenter={() => {
+          console.log("Collision Enter!");
           isOnFloor = true;
           isOnGround = true;
         }}
         oncollisionexit={() => {
+          console.log("Collision Exit!");
           isOnFloor = false;
           isOnGround = false;
         }}
