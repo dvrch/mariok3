@@ -26,15 +26,7 @@
 {#if $gltf}
     <T.Group {position} scale={50} {...props}>
         <RigidBody type="fixed">
-            <Collider
-                shape="trimesh"
-                args={[
-                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0.geometry
-                        .attributes.position.array,
-                    $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0.geometry
-                        .index.array,
-                ]}
-            />
+            <T is={$gltf.scene} colliders="trimesh" />
         </RigidBody>
         <T is={$gltf.scene} />
     </T.Group>
