@@ -77,7 +77,7 @@
     onMount(async () => {
         // Load points (Mock or fetch CurvedPath.json)
         try {
-            const resp = await fetch("./CurvedPath.json");
+            const resp = await fetch("/CurvedPath.json");
             const data = await resp.json();
             const points = Array.isArray(data) ? data : data.points;
 

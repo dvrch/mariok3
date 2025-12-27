@@ -1,6 +1,6 @@
 
 export const playAudio = (path: string, callback?: () => void) => {
-    const audio = new Audio(`./sounds/${path}.mp3`);
+    const audio = new Audio(`/sounds/${path}.mp3`);
     if (callback) {
         audio.addEventListener("ended", callback);
     }

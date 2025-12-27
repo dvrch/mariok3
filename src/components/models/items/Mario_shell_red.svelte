@@ -5,6 +5,7 @@
     import { onMount } from "svelte";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import * as THREE from "three";
+    import { dracoLoader } from "../../../lib/loaders/draco";
 
     let { id, position, rotation, setNetworkShells, networkShells } = $props<{
         id: string;
@@ -14,10 +15,7 @@
         networkShells?: any[];
     }>();
 
-    const dracoLoader = useDraco(
-        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
-    );
-    const gltf = useGltf("./models/items/mario_shell_red.glb", { dracoLoader });
+    const gltf = useGltf("/models/items/mario_shell_red.glb", { dracoLoader });
     let rigidBody = $state<any>();
     let mesh = $state<THREE.Mesh>();
 

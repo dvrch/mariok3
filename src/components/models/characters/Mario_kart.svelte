@@ -1,9 +1,9 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
-    import { gameStore } from "../../../lib/state/gameStore.svelte";
-    import gsap from "gsap";
+    import { dracoLoader } from "../../../lib/loaders/draco";
     import * as THREE from "three";
+    import gsap from "gsap";
 
     let {
         currentSpeed,
@@ -13,7 +13,9 @@
         ...props
     } = $props();
 
-    const gltf = useGltf("./models/characters/mariokarttest.glb");
+    const gltf = useGltf("/models/characters/mariokarttest.glb", {
+        dracoLoader,
+    });
 
     let frontLeftWheel = $state<THREE.Mesh>();
     let frontRightWheel = $state<THREE.Mesh>();
@@ -52,14 +54,24 @@
     });
 </script>
 
+```ts
 {#if $gltf}
     <T.Group bind:ref={marioGroup} rotation={[0, Math.PI, 0]} {...props}>
-        <T.Mesh
-            castShadow
-            receiveShadow
-            geometry={$gltf.nodes.mt_kart_Mario_S.geometry}
-            material={$gltf.materials.mt_kart_Mario_S}
-        />
+        {#each Object.entries($gltf.nodes) as [name, node]}
+            {@const mesh = node as THREE.Mesh}
+            {#if mesh.type === "Mesh" && name !== "ShadowCollision_M_Cmn_ShadowCollision_0" && name !== "mt_Kart_Mario_Tire_S001" && name !== "mt_Kart_Mario_Tire_S002" && name !== "mt_Kart_Mario_Tire_S003" && name !== "mt_mario"}
+                <T.Mesh
+                    castShadow
+                    receiveShadow
+                    geometry={mesh.geometry}
+                    material={mesh.material}
+                    position={mesh.position}
+                    rotation={mesh.rotation}
+                    scale={mesh.scale}
+                />
+            {/if}
+        {/each}
+
         <T.Mesh
             bind:ref={rearWheels}
             castShadow

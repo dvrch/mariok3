@@ -4,12 +4,11 @@
   import { RigidBody } from "@threlte/rapier";
   import * as THREE from "three";
 
+  import { dracoLoader } from "../../../lib/loaders/draco";
+
   let { position = [0, -3.6, 0], scale = 50 } = $props();
 
-  const dracoLoader = useDraco(
-    "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
-  );
-  const gltf = useGltf("./models/tracks/tour_paris_promenade-transformed.glb", {
+  const gltf = useGltf("/models/tracks/tour_paris_promenade-transformed.glb", {
     dracoLoader,
     transform: (data) => {
       const materials = data.materials;

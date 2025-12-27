@@ -163,9 +163,9 @@
     const linvel = body.linvel();
     body.applyImpulse(
       {
-        x: -linvel.x * (1 - damping) * delta * 144,
+        x: -linvel.x * 0.1 * delta * 144,
         y: 0,
-        z: -linvel.z * (1 - damping) * delta * 144,
+        z: -linvel.z * 0.1 * delta * 144,
       },
       true,
     );
@@ -383,7 +383,7 @@
       mass={3}
       ccd
       name="player"
-      type={player.id === gameStore.id ? "dynamic" : "kinematic"}
+      type={player.id === gameStore.id ? "dynamic" : "kinematicPosition"}
     >
       <Collider
         shape="ball"
@@ -495,56 +495,56 @@
 
       <PositionalAudio
         bind:ref={engineSound}
-        url="./sounds/engine.wav"
+        url="/sounds/engine.wav"
         autoplay
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftSound}
-        url="./sounds/drifting.mp3"
+        url="/sounds/drifting.mp3"
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftTwoSound}
-        url="./sounds/driftingTwo.mp3"
+        url="/sounds/driftingTwo.mp3"
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftOrangeSound}
-        url="./sounds/driftOrange.wav"
+        url="/sounds/driftOrange.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftBlueSound}
-        url="./sounds/driftBlue.wav"
+        url="/sounds/driftBlue.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftPurpleSound}
-        url="./sounds/driftPurple.wav"
+        url="/sounds/driftPurple.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={jumpSound}
-        url="./sounds/jump.mp3"
+        url="/sounds/jump.mp3"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={landingSound}
-        url="./sounds/landing.wav"
+        url="/sounds/landing.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={turboSound}
-        url="./sounds/turbo.wav"
+        url="/sounds/turbo.wav"
         loop={false}
         distance={1000}
       />

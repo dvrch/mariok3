@@ -1,16 +1,14 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
-    import { useGltf, useDraco } from "@threlte/extras";
+    import { useGltf } from "@threlte/extras";
     import { Collider, RigidBody } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
+    import { dracoLoader } from "../../../lib/loaders/draco";
     import * as THREE from "three";
 
-    let { position = [0, 0, 0] } = $props();
+    let { position } = $props();
 
-    const dracoLoader = useDraco(
-        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
-    );
-    const gltf = useGltf("./models/misc/gift-transformed.glb", { dracoLoader });
+    const gltf = useGltf("/models/misc/gift-transformed.glb", { dracoLoader });
     let ref = $state<THREE.Group>();
     let body = $state<any>();
     let scale = $state(0.6);
@@ -44,6 +42,7 @@
     };
 </script>
 
+```typescript
 {#if $gltf}
     <RigidBody
         type="fixed"

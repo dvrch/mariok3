@@ -3,6 +3,7 @@
     import { useGltf, useDraco } from "@threlte/extras";
     import { Collider, RigidBody } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
+    import { dracoLoader } from "../../../lib/loaders/draco";
 
     let { id, position, setNetworkBananas, networkBananas } = $props<{
         id: string;
@@ -11,11 +12,8 @@
         networkBananas?: any[];
     }>();
 
-    const dracoLoader = useDraco(
-        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
-    );
     const gltf = useGltf(
-        "./models/items/banana_peel_mario_kart-transformed.glb",
+        "/models/items/banana_peel_mario_kart-transformed.glb",
         { dracoLoader },
     );
     let scale = 0.002;

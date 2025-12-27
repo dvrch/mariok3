@@ -7,11 +7,11 @@
     const itemImage = $derived.by(() => {
         switch (gameStore.item) {
             case "banana":
-                return "./images/banana.webp";
+                return "/images/banana.webp";
             case "mushroom":
-                return "./images/mushroom.png";
+                return "/images/mushroom.png";
             case "shell":
-                return "./images/shell.webp";
+                return "/images/shell.webp";
             default:
                 return "";
         }
