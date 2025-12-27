@@ -49,7 +49,8 @@
     const confirm = () => {
         if (controlStyle !== "") {
             gameStore.controls = controlStyle;
-            gameStore.gameStarted = true;
+            gameStore.introAnimationPlaying = false; // Stop intro
+            gameStore.gameStarted = true; // Start game
         }
     };
 </script>

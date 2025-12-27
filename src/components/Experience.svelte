@@ -31,6 +31,7 @@
     // Simulation of path animation when game not started
     useTask((delta) => {
         if (
+            gameStore.introAnimationPlaying &&
             !gameStore.gameStarted &&
             cam &&
             lookAtTarget &&
@@ -58,8 +59,9 @@
             if (cam.position.distanceTo(targetPoint) < 5) {
                 currentPoint = nextPointIdx;
             }
-        } else {
+        } else if (gameStore.introAnimationPlaying) {
             console.log("Animation skipped:", {
+                introPlaying: gameStore.introAnimationPlaying,
                 started: gameStore.gameStarted,
                 hasCam: !!cam,
                 hasTarget: !!lookAtTarget,

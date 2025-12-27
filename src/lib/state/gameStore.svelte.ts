@@ -11,6 +11,7 @@ export const items = ["banana", "shell"];
 
 class GameStore {
     gameStarted = $state(false);
+    introAnimationPlaying = $state(true); // Intro runs on page load
     controls = $state("");
     particles1 = $state<any[]>([]);
     particles2 = $state<any[]>([]);
