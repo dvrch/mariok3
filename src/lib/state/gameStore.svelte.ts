@@ -34,6 +34,8 @@ class GameStore {
     itemButton = $state(false);
     menuButton = $state(false);
     isDrifting = $state(false);
+    isFallen = $state(false);
+    resetSignal = $state(0);
 
     addPastPosition(position: any) {
         this.pastPositions = [position, ...this.pastPositions.slice(0, 499)];
@@ -101,6 +103,11 @@ class GameStore {
 
     removePlayer(player: any) {
         this.players = this.players.filter((p) => p.id !== player.id);
+    }
+
+    triggerReset() {
+        this.isFallen = false;
+        this.resetSignal += 1;
     }
 }
 

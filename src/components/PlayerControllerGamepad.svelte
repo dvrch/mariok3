@@ -391,7 +391,7 @@
     // Reset
     if (select) {
       body.setTranslation({ x: 8, y: 2, z: -119 }, true);
-      body.setLinvel({ x: 0, y: 0, z: 0 }, true);
+
       body.setAngvel({ x: 0, y: 0, z: 0 }, true);
       currentSpeed = 0;
       currentSteeringSpeed = 0;
@@ -422,12 +422,17 @@
     player.setState("scale", scale);
     player.setState("bananas", gameStore.bananas);
 
-    // Safety net: Reset if falling too deep (Y < -20)
+    // Safety net: Set fallen state if falling too deep (Y < -20)
     const pos = body.translation();
-    if (pos.y < -500) {
+    if (pos.y < -20 && !gameStore.isFallen) {
+      gameStore.isFallen = true;
+    }
+  });
+
+  $effect(() => {
+    if (gameStore.resetSignal > 0) {
       body.setTranslation({ x: 25, y: 10, z: -120 }, true);
       body.setLinvel({ x: 0, y: 0, z: 0 }, true);
-      console.log("🛟 Safety Net: Kart reset to spawn");
     }
   });
 </script>

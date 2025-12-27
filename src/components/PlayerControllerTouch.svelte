@@ -373,9 +373,9 @@
 
     // Safety net: Reset if falling too deep (Y < -20)
     const pos = body.translation();
-    if (pos.y < -500) {
-      body.setTranslation({ x: 25, y: 10, z: -120 }, true);
-      body.setLinvel({ x: 0, y: 0, z: 0 }, true);
+    if (pos.y < -20 && !gameStore.isFallen0) {
+      
+      
       console.log("🛟 Safety Net: Kart reset to spawn");
     }
   });

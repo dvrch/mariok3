@@ -1,8 +1,9 @@
 <script lang="ts">
     import { T } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
-    import { RigidBody } from "@threlte/rapier";
+    import { RigidBody, Collider } from "@threlte/rapier";
     import { dracoLoader } from "../../../lib/loaders/draco";
+    import * as THREE from "three";
 
     let { position = [0, -3.6, 0], ...props } = $props();
 
@@ -18,14 +19,40 @@
                 materials.M_Cmn_ShadowCollision.opacity = 0;
                 materials.M_Cmn_ShadowCollision.transparent = true;
             }
+
+            const collisionNode =
+                $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0;
+            if (collisionNode) {
+                console.log(
+                    "🏙️ Track Collision Node Found:",
+                    collisionNode.name,
+                );
+                console.log("📍 Local Position:", collisionNode.position);
+            } else {
+                console.error("❌ Track Collision Node NOT FOUND!");
+            }
         }
     });
 </script>
 
 {#if $gltf}
-    <RigidBody type="fixed" {position}>
-        <T.Group scale={50} {...props}>
-            <T is={$gltf.scene} colliders="trimesh" />
-        </T.Group>
-    </RigidBody>
+    <T.Group {position} scale={50} {...props}>
+        <!-- Visual City -->
+        <T is={$gltf.scene} />
+
+        <!-- Solid Road / Terrain -->
+        {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
+            <RigidBody type="fixed">
+                <Collider
+                    shape="trimesh"
+                    args={[
+                        $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0
+                            .geometry.attributes.position.array,
+                        $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0
+                            .geometry.index.array,
+                    ]}
+                />
+            </RigidBody>
+        {/if}
+    </T.Group>
 {/if}
