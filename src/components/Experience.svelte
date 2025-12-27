@@ -58,8 +58,8 @@
             );
 
             _target.position.lerp(lookAtPoint, delta * speedFactor);
-            if (_cam && _target) {
-                _cam.lookAt(_target.position);
+            if (cam && _target) {
+                cam.lookAt(_target.position);
             }
 
             if (_cam.position.distanceTo(targetPoint) < 5) {
