@@ -13,9 +13,8 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true,
-    "types": ["@react-three/fiber"]
+    "strict": true
   },
-  "exclude": ["node_modules"],
-  "include": ["."]
+  "exclude": ["node_modules", "Paris-bis-transformed.tsx", "ancien"],
+  "include": ["src"]
 }

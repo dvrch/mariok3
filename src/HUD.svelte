@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { gameStore } from "./lib/state/gameStore.svelte";
+    import Joystick from "./components/Joystick.svelte";
 
     let wheelElement = $state<HTMLDivElement | null>(null);
 
@@ -35,8 +36,8 @@
         return () => window.removeEventListener("mousemove", handleMouseMove);
     });
 
-    // Joystick handlers (Simplified)
-    const handleJoystickMove = (x: number) => {
+    // Joystick handlers
+    const handleJoystickMove = (x: number, y: number) => {
         gameStore.joystickX = x;
     };
 
@@ -60,12 +61,8 @@
         </div>
 
         {#if gameStore.controls === "touch"}
-            <!-- Joystick Placeholder / Simple Implementation -->
             <div class="controls joystick">
-                <!-- Simplement un cercle pour le moment -->
-                <div class="joystick-base">
-                    <div class="joystick-stick"></div>
-                </div>
+                <Joystick size={100} onMove={handleJoystickMove} onStop={handleJoystickStop} />
             </div>
 
             <div
@@ -119,21 +116,3 @@
     {/if}
 </div>
 
-<style>
-    .joystick-base {
-        width: 100px;
-        height: 100px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .joystick-stick {
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.5);
-        border-radius: 50%;
-    }
-</style>
