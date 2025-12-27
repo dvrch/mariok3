@@ -1,11 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap");
 
-#app {
+#root {
   width: 100vw;
   height: 100vh;
   user-select: none;
 }
-
 
 * {
   box-sizing: border-box;

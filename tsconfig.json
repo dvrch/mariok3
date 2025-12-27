@@ -1,37 +1,21 @@
 {
   "compilerOptions": {
-    "moduleResolution": "bundler",
-    "module": "esnext",
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable"
-    ],
-    "target": "esnext",
-    "useDefineForClassFields": true,
     "allowJs": true,
-    "checkJs": true,
-    "skipLibCheck": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
+    "incremental": true,
     "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
     "strict": true,
-    "verbatimModuleSyntax": true,
-    "baseUrl": ".",
-    "paths": {
-      "$lib": [
-        "src/lib"
-      ],
-      "$lib/*": [
-        "src/lib/*"
-      ]
-    }
+    "types": ["@react-three/fiber"]
   },
-  "include": [
-    "src/**/*",
-    "src/**/*.svelte",
-    "src/**/*.svelte.ts"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["."]
 }
