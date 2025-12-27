@@ -581,56 +581,56 @@
 
       <PositionalAudio
         bind:ref={engineSound}
-        url="/sounds/engine.wav"
+        src="/sounds/engine.wav"
         autoplay
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftSound}
-        url="/sounds/drifting.mp3"
+        src="/sounds/drifting.mp3"
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftTwoSound}
-        url="/sounds/driftingTwo.mp3"
+        src="/sounds/driftingTwo.mp3"
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftOrangeSound}
-        url="/sounds/driftOrange.wav"
+        src="/sounds/driftOrange.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftBlueSound}
-        url="/sounds/driftBlue.wav"
+        src="/sounds/driftBlue.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftPurpleSound}
-        url="/sounds/driftPurple.wav"
+        src="/sounds/driftPurple.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={jumpSound}
-        url="/sounds/jump.mp3"
+        src="/sounds/jump.mp3"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={landingSound}
-        url="/sounds/landing.wav"
+        src="/sounds/landing.wav"
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={turboSound}
-        url="/sounds/turbo.wav"
+        src="/sounds/turbo.wav"
         loop={false}
         distance={1000}
       />
