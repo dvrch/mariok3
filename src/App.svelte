@@ -3,7 +3,7 @@
     import { World } from "@threlte/rapier";
     import { onMount } from "svelte";
     import { insertCoin, onPlayerJoin } from "playroomkit";
-    import { KeyboardControls } from "@threlte/extras";
+    import KeyboardControls from "./components/KeyboardControls.svelte";
     import { gameStore } from "./lib/state/gameStore.svelte";
     import Experience from "./components/Experience.svelte";
     import * as THREE from "three";

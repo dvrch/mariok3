@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { T } from '@threlte/core'
-  import * as THREE from 'three'
-  import { Color, DoubleSide, AdditiveBlending } from 'three'
+  import { T } from "@threlte/core";
+  import * as THREE from "three";
+  import { Color, DoubleSide, AdditiveBlending } from "three";
 
-  let { 
-    falloff = 3, 
-    glowInternalRadius = 1.0, 
-    glowColor = '#b97939', 
-    glowSharpness = 1.0 
+  let {
+    falloff = 3,
+    glowInternalRadius = 1.0,
+    glowColor = "#b97939",
+    glowSharpness = 1.0,
   } = $props();
 
   const vertexShader = `
@@ -50,27 +50,27 @@
         #include <colorspace_fragment>
       }`;
 
-    const material = new THREE.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        uniforms: {
-            glowColor: { value: new Color(glowColor) },
-            falloffAmount: { value: falloff },
-            glowSharpness: { value: glowSharpness },
-            glowInternalRadius: { value: glowInternalRadius }
-        },
-        side: DoubleSide,
-        transparent: true,
-        blending: AdditiveBlending,
-        depthTest: false
-    });
+  const material = new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      glowColor: { value: new Color(glowColor) },
+      falloffAmount: { value: falloff },
+      glowSharpness: { value: glowSharpness },
+      glowInternalRadius: { value: glowInternalRadius },
+    },
+    side: DoubleSide,
+    transparent: true,
+    blending: AdditiveBlending,
+    depthTest: false,
+  });
 
-    $effect(() => {
-        material.uniforms.glowColor.value.set(glowColor);
-        material.uniforms.falloffAmount.value = falloff;
-        material.uniforms.glowSharpness.value = glowSharpness;
-        material.uniforms.glowInternalRadius.value = glowInternalRadius;
-    });
+  $effect(() => {
+    material.uniforms.glowColor.value.set(glowColor);
+    material.uniforms.falloffAmount.value = falloff;
+    material.uniforms.glowSharpness.value = glowSharpness;
+    material.uniforms.glowInternalRadius.value = glowInternalRadius;
+  });
 </script>
 
 <T is={material} />
