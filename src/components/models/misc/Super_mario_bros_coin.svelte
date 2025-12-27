@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
-    import { RigidBody } from "@threlte/rapier";
+    import { RigidBody, Collider } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import { dracoLoader } from "../../../lib/loaders/draco";
     import * as THREE from "three";
@@ -41,7 +41,7 @@
 
 {#if $gltf}
     <T.Group {position}>
-        <RigidBody type="fixed" name="coin" bind:rigidBody={body}>
+        <RigidBody type="fixed" bind:rigidBody={body}>
             <Collider
                 shape="ball"
                 args={[25]}

@@ -223,7 +223,7 @@
     );
 
     const bodyPosition = body.translation();
-    kart.position.set(bodyPosition.x, bodyPosition.y - 35, bodyPosition.z);
+    kart.position.set(bodyPosition.x, bodyPosition.y - 10, bodyPosition.z);
 
     // Jumping
     if (jumpPressed && isOnGround && !jumpIsHeld) {
@@ -466,7 +466,7 @@
       bind:rigidBody={body}
       colliders={false}
       position={[8, 60, -119]}
-      centerOfMass={[0, -35, 0]}
+      centerOfMass={[0, -10, 0]}
       mass={3}
       ccd
       name="player"
@@ -474,7 +474,7 @@
     >
       <Collider
         shape="ball"
-        args={[35]}
+        args={[10]}
         mass={3}
         oncollisionenter={() => {
           isOnFloor = true;

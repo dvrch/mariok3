@@ -44,12 +44,7 @@
 
 {#if $gltf}
     <T.Group {position}>
-        <RigidBody
-            type="fixed"
-            bind:rigidBody={body}
-            colliders={false}
-            name="gift"
-        >
+        <RigidBody type="fixed" bind:rigidBody={body}>
             <Collider
                 shape="cuboid"
                 args={[75, 75, 75]}
