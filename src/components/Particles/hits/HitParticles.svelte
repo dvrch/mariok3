@@ -1,1 +1,1 @@
-<script lang="ts"></script>
+<script lang="ts">let { ...props } = $props();</script>

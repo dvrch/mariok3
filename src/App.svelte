@@ -1,7 +1,6 @@
 <script lang="ts">
     import { Canvas } from "@threlte/core";
     import { World } from "@threlte/rapier";
-    import { KeyboardControls, Loader } from "@threlte/extras";
     import { onMount } from "svelte";
     import { insertCoin, onPlayerJoin } from "playroomkit";
     import { gameStore } from "./lib/state/gameStore.svelte";
@@ -34,13 +33,9 @@
     });
 </script>
 
-<Loader />
-
 <Canvas dpr={1} toneMapping={THREE.AgXToneMapping}>
     <World gravity={[0, -90, 0]}>
-        <KeyboardControls {map}>
-            <Experience networkBananas={[]} networkShells={[]} />
-        </KeyboardControls>
+        <Experience networkBananas={[]} networkShells={[]} />
     </World>
 </Canvas>
 

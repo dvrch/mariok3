@@ -1,6 +1,6 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core";
-    import { Environment, PerspectiveCamera } from "@threlte/extras";
+    import { Environment } from "@threlte/extras";
     import { gameStore } from "../lib/state/gameStore.svelte";
     import { myPlayer } from "playroomkit";
     import ParisBis from "./models/tracks/Paris-bis.svelte";

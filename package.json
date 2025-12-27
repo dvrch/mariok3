@@ -10,10 +10,10 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.16.2",
     "@threlte/core": "^8.0.0",
     "@threlte/extras": "^9.0.0",
     "@threlte/rapier": "^3.0.0",
-    "dimforge/rapier3d-compat": "0.11.2",
     "gsap": "^3.12.5",
     "playroomkit": "^0.0.66",
     "three": "^0.171.0",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@types/three": "^0.182.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
     "tslib": "^2.6.2",
