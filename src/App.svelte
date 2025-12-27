@@ -36,22 +36,12 @@
 
         // Use myPlayer() to get the local player ID reliably
         gameStore.id = myPlayer().id;
-
-        // Force reset AFTER Playroomkit initialization
-        setTimeout(() => {
-            gameStore.gameStarted = false;
-            gameStore.introAnimationPlaying = true;
-            console.log(
-                "🎮 Game state reset to NOT STARTED, Local ID:",
-                gameStore.id,
-            );
-        }, 100);
     });
 </script>
 
 <Canvas dpr={1} toneMapping={THREE.AgXToneMapping}>
     <SceneSetup />
-    <World gravity={[0, -90, 0]}>
+    <World gravity={[0, -30, 0]}>
         <AudioListener />
         <KeyboardControls {map}>
             <Experience networkBananas={[]} networkShells={[]} />

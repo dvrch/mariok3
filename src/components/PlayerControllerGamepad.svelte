@@ -420,7 +420,7 @@
     player.setState("shouldLaunch", shouldLaunch);
     player.setState("turboColor", turboColor);
     player.setState("scale", scale);
-    player.setState("bananas", gameStore.bananas);
+    player.setState("bananas", gameStore.bananas); const pos = body.translation(); if (pos.y < -50) { body.setTranslation({ x: 8, y: 60, z: -119 }, true); body.setLinvel({ x: 0, y: 0, z: 0 }, true); console.log("🛟 Safety Net: Kart reset to spawn"); }
   });
 </script>
 

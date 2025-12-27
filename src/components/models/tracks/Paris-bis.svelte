@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T } from "@threlte/core";
     import { useGltf, useDraco } from "@threlte/extras";
-    import { RigidBody } from "@threlte/rapier";
+    import { RigidBody, Collider } from "@threlte/rapier";
 
     import { dracoLoader } from "../../../lib/loaders/draco";
 
@@ -30,11 +30,10 @@
                 {@const collisionMesh =
                     $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
                 {#if collisionMesh}
-                    <RigidBody type="fixed" colliders="trimesh" name="terrain">
-                        <T.Mesh
-                            geometry={collisionMesh.geometry}
-                            material={$gltf.materials.M_Cmn_ShadowCollision}
-                            position={[0, 0.244, 0]}
+                    <RigidBody type="fixed" name="terrain">
+                        <Collider
+                            shape="trimesh"
+                            args={[collisionMesh.geometry]}
                         />
                     </RigidBody>
                 {/if}
