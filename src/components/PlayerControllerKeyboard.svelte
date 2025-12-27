@@ -384,18 +384,23 @@
     }
 
     // Camera
-    if (cam) {
+    if (cam && kart) {
       cam.updateMatrixWorld();
+      // La caméra est enfant du kart, donc position relative
       cam.position.x = THREE.MathUtils.lerp(
         cam.position.x,
         targetXPosition,
-        0.01 * dt,
+        0.01 * dt * 144,
       );
       cam.position.z = THREE.MathUtils.lerp(
         cam.position.z,
         targetZPosition,
-        0.01 * dt,
+        0.01 * dt * 144,
       );
+      // Faire regarder la caméra vers le kart (légèrement en avant du kart)
+      const lookAtPosition = new THREE.Vector3(0, 0.5, -2);
+      lookAtPosition.applyMatrix4(kart.matrixWorld);
+      cam.lookAt(lookAtPosition);
     }
 
     // Apply physics impulse
