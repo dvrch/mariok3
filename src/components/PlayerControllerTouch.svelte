@@ -17,7 +17,7 @@
   let {
     player,
     userPlayer, //TODO
-    position = [8, 2, -119] as [number, number, number],
+    position = [25, 30, -120] as [number, number, number],
   } = $props();
 
   const { camera } = useThrelte();
@@ -384,7 +384,7 @@
 
     // Safety net: Set fallen state if falling too deep (Y < -20)
     const pos = body.translation();
-    if (pos.y < 30 && !gameStore.isFallen) {
+    if (pos.y < -20 && !gameStore.isFallen) {
       gameStore.isFallen = true;
     }
 

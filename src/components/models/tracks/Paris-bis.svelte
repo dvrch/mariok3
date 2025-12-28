@@ -12,7 +12,7 @@
     //     dracoLoader,
     // });
     const gltf = useGltf(
-        "/models/tracks/tour_paris_promenade-transformed.glb",
+        basePath("/models/tracks/tour_paris_promenade-transformed.glb"),
         { dracoLoader },
     );
 
