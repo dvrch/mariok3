@@ -14,7 +14,7 @@
     });
     let ref = $state<THREE.Group>();
     let body = $state<any>();
-    let scale = $state(0.6); // Legacy
+    let scale = $state(0.6);
     let frames = 0;
 
     useTask((delta) => {

@@ -26,11 +26,7 @@
 {#if $gltf}
     <!-- Legacy Structure: Scale 50 at Top, Scene inside with scale 0.01 -->
     <!-- Force world position [0, -3.6, 0] when Experience passes [0,0,0] to match React -->
-    <T.Group
-        position={[position[0], position[1] - 3.6, position[2]]}
-        scale={50}
-        {...props}
-    >
+    <T.Group {position} scale={50} {...props}>
         <RigidBody type="fixed">
             <AutoColliders shape="trimesh">
                 <T.Group scale={0.01}>
