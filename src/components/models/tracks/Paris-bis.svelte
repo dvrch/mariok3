@@ -7,9 +7,10 @@
     let { position = [0, -3.6, 0] as [number, number, number], ...props } =
         $props();
 
-    const gltf = useGltf("/models/tracks/paris-bis.glb", {
-        dracoLoader,
-    });
+    const gltf = useGltf(
+        "/models/tracks/tour_paris_promenade-transformed.glb",
+        { dracoLoader },
+    );
 
     $effect(() => {
         if ($gltf) {
@@ -23,13 +24,11 @@
 </script>
 
 {#if $gltf}
-    <!-- Legacy Structure: Scale 50 at Top, Scene inside with trimesh colliders -->
+    <!-- Unified Scale: 50 (to match Experience map scaling and points) -->
     <T.Group {position} scale={50} {...props}>
         <RigidBody type="fixed">
             <AutoColliders shape="trimesh">
-                <T.Group scale={0.01}>
-                    <T is={$gltf.scene} />
-                </T.Group>
+                <T is={$gltf.scene} />
             </AutoColliders>
         </RigidBody>
     </T.Group>
