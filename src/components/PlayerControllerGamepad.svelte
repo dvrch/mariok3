@@ -1,5 +1,6 @@
 <script lang="ts">
   import { T, useTask, useThrelte } from "@threlte/core";
+  import { onMount } from "svelte";
   import { PositionalAudio } from "@threlte/extras";
   import { RigidBody, Collider } from "@threlte/rapier";
   import * as THREE from "three";
@@ -85,6 +86,10 @@
       gameStore.leftWheel = leftWheel;
       gameStore.rightWheel = rightWheel;
     }
+  });
+
+  onMount(() => {
+    gameStore.triggerReset();
   });
 
   useTask((delta) => {
@@ -458,7 +463,7 @@
   });
 
   $effect(() => {
-    if (gameStore.resetSignal > 0) {
+    if (body && gameStore.resetSignal > 0) {
       body.setTranslation(
         { x: position[0], y: position[1], z: position[2] },
         true,
