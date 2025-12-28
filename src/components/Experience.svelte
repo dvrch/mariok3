@@ -10,6 +10,7 @@
     import Banana from "./models/items/Banana_peel_mario_kart.svelte";
     import Shell from "./models/items/Mario_shell_red.svelte";
     import PlayerDummies from "./PlayerDummies.svelte";
+    import Skid from "./Skid.svelte";
     import PlayerControllerKeyboard from "./PlayerControllerKeyboard.svelte";
     import PlayerControllerGamepad from "./PlayerControllerGamepad.svelte";
     import PlayerControllerTouch from "./PlayerControllerTouch.svelte";
@@ -48,7 +49,7 @@
                 pointest[currentPoint].z,
             );
 
-            cam.position.lerp(targetPoint, delta * speedFactor);
+            if (cam) cam.position.lerp(targetPoint, delta * speedFactor);
 
             const nextPointIdx = (currentPoint + 1) % pointest.length;
             const lookAtPoint = new THREE.Vector3(
@@ -150,8 +151,9 @@
 <ItemBox position={[-20, 2.5, -119]} />
 <Coin position={[-30, 2, -119]} />
 
+<Skid />
 <Ground position={[0, 0, 0]} />
-<Environment resolution={256} preset="lobby" />
+<Environment />
 
 {#each networkBananas as banana (banana.id)}
     <Banana position={banana.position} id={banana.id} />
@@ -165,7 +167,7 @@
 <T.HemisphereLight intensity={1.5} groundColor={0xffffff} skyColor={0x87ceeb} />
 <T.DirectionalLight
     position={[10, 50, -30]}
-    intensity={8}
+    intensity={1}
     castShadow
     shadow.bias={-0.0001}
     shadow.mapSize={[4096, 4096]}

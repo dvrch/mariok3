@@ -82,18 +82,16 @@
   let slowDownDuration = 1500;
 
   $effect(() => {
-    if (leftWheel && rightWheel && body) {
-      // In the original, actions.setLeftWheel(...) was called.
-      // Assuming we might not need to store them in gameStore if logic is local?
-      // But if Mario model needs them, we might be fine.
-      // For now, let's assume local logic is sufficient for steering visuals initiated here.
+    if (leftWheel && rightWheel && body && player.id === gameStore.id) {
+      gameStore.leftWheel = leftWheel;
+      gameStore.rightWheel = rightWheel;
     }
   });
 
   useTask((delta) => {
     // Clamp delta to prevent physics explosion
     const safeDelta = Math.min(delta, 0.015);
-    const dt = safeDelta * 144; // use this scaled delta for everything
+    const dt = safeDelta * 144; // match React's useFrame delta * 144 logic
 
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return; // cam might be null initially
@@ -412,6 +410,21 @@
       },
       true,
     );
+
+    if (leftWheel) {
+      // @ts-ignore
+      leftWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      leftWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
+    if (rightWheel) {
+      // @ts-ignore
+      rightWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      rightWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
 
     steeringAngleWheels = steeringAngle * 25;
 

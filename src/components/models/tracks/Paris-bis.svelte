@@ -7,10 +7,7 @@
     let { position = [0, -3.6, 0] as [number, number, number], ...props } =
         $props();
 
-    const gltf = useGltf(
-        "/models/tracks/tour_paris_promenade-transformed.glb",
-        { dracoLoader },
-    );
+    const gltf = useGltf("/models/tracks/paris-bis.glb", { dracoLoader });
 
     $effect(() => {
         if ($gltf) {
@@ -24,11 +21,18 @@
 </script>
 
 {#if $gltf}
-    <!-- Unified Scale: 50 (to match Experience map scaling and points) -->
-    <T.Group {position} scale={50} {...props}>
+    <!-- Legacy Structure: Scale 50 at Top, Scene inside with scale 0.01 -->
+    <!-- Force world position [0, -3.6, 0] when Experience passes [0,0,0] to match React -->
+    <T.Group
+        position={[position[0], position[1] - 3.6, position[2]]}
+        scale={50}
+        {...props}
+    >
         <RigidBody type="fixed">
             <AutoColliders shape="trimesh">
-                <T is={$gltf.scene} />
+                <T.Group scale={0.01}>
+                    <T is={$gltf.scene} />
+                </T.Group>
             </AutoColliders>
         </RigidBody>
     </T.Group>

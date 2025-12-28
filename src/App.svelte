@@ -42,7 +42,7 @@
 
 <Canvas dpr={1} toneMapping={THREE.AgXToneMapping}>
     <SceneSetup />
-    <World gravity={[0, -30, 0]}>
+    <World gravity={[0, -90, 0]}>
         <AudioListener />
         <KeyboardControls {map}>
             <Experience networkBananas={[]} networkShells={[]} />
