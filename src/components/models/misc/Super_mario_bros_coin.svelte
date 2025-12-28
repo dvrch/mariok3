@@ -4,13 +4,17 @@
     import { RigidBody, Collider } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import { dracoLoader } from "../../../lib/loaders/draco";
+    import { basePath } from "../../../lib/utils/path";
     import * as THREE from "three";
 
     let { position } = $props();
 
-    const gltf = useGltf("/models/misc/super_mario_bros_coin-transformed.glb", {
-        dracoLoader,
-    });
+    const gltf = useGltf(
+        basePath("/models/misc/super_mario_bros_coin-transformed.glb"),
+        {
+            dracoLoader,
+        },
+    );
     let body = $state<any>();
     let mesh = $state<THREE.Mesh>();
     let scale = $state(0.424); // Legacy

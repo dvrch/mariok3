@@ -16,6 +16,7 @@
     import PlayerControllerTouch from "./PlayerControllerTouch.svelte";
     import PlayerController from "./PlayerController.svelte";
     import { onMount } from "svelte";
+    import { basePath } from "../lib/utils/path";
     import * as THREE from "three";
 
     // Props for multiplayer states (simplified for now)
@@ -80,7 +81,7 @@
     onMount(async () => {
         // Load points (Mock or fetch CurvedPath.json)
         try {
-            const resp = await fetch("/CurvedPath.json");
+            const resp = await fetch(basePath("/CurvedPath.json"));
             const data = await resp.json();
             const points = Array.isArray(data) ? data : data.points;
 

@@ -14,6 +14,7 @@
   import CoinParticles from "./Particles/coins/CoinParticles.svelte";
   import ItemParticles from "./Particles/items/ItemParticles.svelte";
   import FakeGlowMaterial from "./ShaderMaterials/FakeGlow/FakeGlowMaterial.svelte";
+  import { basePath } from "../lib/utils/path";
 
   let {
     player,
@@ -582,22 +583,22 @@
 
         <PointParticle
           position={[-0.6, 0.05, 0.5]}
-          png="./particles/circle.png"
+          png={basePath("/particles/circle.png")}
           {turboColor}
         />
         <PointParticle
           position={[0.6, 0.05, 0.5]}
-          png="./particles/circle.png"
+          png={basePath("/particles/circle.png")}
           {turboColor}
         />
         <PointParticle
           position={[-0.6, 0.05, 0.5]}
-          png="./particles/star.png"
+          png={basePath("/particles/star.png")}
           {turboColor}
         />
         <PointParticle
           position={[0.6, 0.05, 0.5]}
-          png="./particles/star.png"
+          png={basePath("/particles/star.png")}
           {turboColor}
         />
 
@@ -614,56 +615,56 @@
 
       <PositionalAudio
         bind:ref={engineSound}
-        src="/sounds/engine.wav"
+        src={basePath("/sounds/engine.wav")}
         autoplay
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftSound}
-        src="/sounds/drifting.mp3"
+        src={basePath("/sounds/drifting.mp3")}
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftTwoSound}
-        src="/sounds/driftingTwo.mp3"
+        src={basePath("/sounds/driftingTwo.mp3")}
         loop
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftOrangeSound}
-        src="/sounds/driftOrange.wav"
+        src={basePath("/sounds/driftOrange.wav")}
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftBlueSound}
-        src="/sounds/driftBlue.wav"
+        src={basePath("/sounds/driftBlue.wav")}
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={driftPurpleSound}
-        src="/sounds/driftPurple.wav"
+        src={basePath("/sounds/driftPurple.wav")}
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={jumpSound}
-        src="/sounds/jump.mp3"
+        src={basePath("/sounds/jump.mp3")}
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={landingSound}
-        src="/sounds/landing.wav"
+        src={basePath("/sounds/landing.wav")}
         loop={false}
         distance={1000}
       />
       <PositionalAudio
         bind:ref={turboSound}
-        src="/sounds/turbo.wav"
+        src={basePath("/sounds/turbo.wav")}
         loop={false}
         distance={1000}
       />

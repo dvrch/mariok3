@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { gameStore } from "./lib/state/gameStore.svelte";
+    import { basePath } from "./lib/utils/path";
     import gsap from "gsap";
 
     let logo = $state<HTMLImageElement | null>(null);
@@ -59,7 +60,7 @@
     {#if setupStatus === 0}
         <div class="home">
             <div class="logo">
-                <img bind:this={logo} src="/logo.png" alt="logo" />
+                <img bind:this={logo} src={basePath("/logo.png")} alt="logo" />
             </div>
             <div class="start" bind:this={startButton} style="opacity: 0;">
                 <button
@@ -84,7 +85,10 @@
                             : ''}"
                         onclick={() => (controlStyle = "keyboard")}
                     >
-                        <img src="/images/keyboard.png" alt="keyboard" />
+                        <img
+                            src={basePath("/images/keyboard.png")}
+                            alt="keyboard"
+                        />
                         <div class="article_label">
                             <p>Keyboard</p>
                         </div>
@@ -97,7 +101,10 @@
                             : ''}"
                         onclick={() => (controlStyle = "gamepad")}
                     >
-                        <img src="/images/gamepad.png" alt="gamepad" />
+                        <img
+                            src={basePath("/images/gamepad.png")}
+                            alt="gamepad"
+                        />
                         <div class="article_label">
                             <p>Gamepad</p>
                         </div>
@@ -111,7 +118,7 @@
                         onclick={() => (controlStyle = "mouseKeyboard")}
                     >
                         <img
-                            src="/images/mousekeyboard.png"
+                            src={basePath("/images/mousekeyboard.png")}
                             alt="mouse & keyboard"
                         />
                         <div class="article_label">
@@ -126,7 +133,10 @@
                             : ''}"
                         onclick={() => (controlStyle = "touch")}
                     >
-                        <img src="/images/mobile.png" alt="mobile" />
+                        <img
+                            src={basePath("/images/mobile.png")}
+                            alt="mobile"
+                        />
                         <div class="article_label">
                             <p>Mobile</p>
                         </div>

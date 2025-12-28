@@ -4,6 +4,7 @@
     import { Collider, RigidBody } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import { dracoLoader } from "../../../lib/loaders/draco";
+    import { basePath } from "../../../lib/utils/path";
 
     let { id, position, setNetworkBananas, networkBananas } = $props<{
         id: string;
@@ -13,7 +14,7 @@
     }>();
 
     const gltf = useGltf(
-        "/models/items/banana_peel_mario_kart-transformed.glb",
+        basePath("/models/items/banana_peel_mario_kart-transformed.glb"),
         { dracoLoader },
     );
     let scale = 0.002;

@@ -2,12 +2,15 @@
     import { T } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
     import { RigidBody, AutoColliders } from "@threlte/rapier";
+    import { basePath } from "../../../lib/utils/path";
     import { dracoLoader } from "../../../lib/loaders/draco";
 
     let { position = [0, -3.6, 0] as [number, number, number], ...props } =
         $props();
 
-    const gltf = useGltf("/models/tracks/paris-bis.glb", { dracoLoader });
+    const gltf = useGltf(basePath("/models/tracks/paris-bis.glb"), {
+        dracoLoader,
+    });
 
     $effect(() => {
         if ($gltf) {

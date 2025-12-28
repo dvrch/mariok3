@@ -4,11 +4,14 @@
     import { Collider, RigidBody } from "@threlte/rapier";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import { dracoLoader } from "../../../lib/loaders/draco";
+    import { basePath } from "../../../lib/utils/path";
     import * as THREE from "three";
 
     let { position } = $props();
 
-    const gltf = useGltf("/models/misc/gift-transformed.glb", { dracoLoader });
+    const gltf = useGltf(basePath("/models/misc/gift-transformed.glb"), {
+        dracoLoader,
+    });
     let ref = $state<THREE.Group>();
     let body = $state<any>();
     let scale = $state(0.6); // Legacy

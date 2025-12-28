@@ -2,6 +2,7 @@
     import { T, useTask } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
     import { dracoLoader } from "../../../lib/loaders/draco";
+    import { basePath } from "../../../lib/utils/path";
     import * as THREE from "three";
     import gsap from "gsap";
     import FakeGlowMaterial from "../../ShaderMaterials/FakeGlow/FakeGlowMaterial.svelte";
@@ -15,7 +16,7 @@
         ...props
     } = $props();
 
-    const gltf = useGltf("/models/characters/mariokarttest.glb", {
+    const gltf = useGltf(basePath("/models/characters/mariokarttest.glb"), {
         dracoLoader,
     });
 

@@ -6,6 +6,7 @@
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import * as THREE from "three";
     import { dracoLoader } from "../../../lib/loaders/draco";
+    import { basePath } from "../../../lib/utils/path";
 
     let { id, position, rotation, setNetworkShells, networkShells } = $props<{
         id: string;
@@ -15,7 +16,9 @@
         networkShells?: any[];
     }>();
 
-    const gltf = useGltf("/models/items/mario_shell_red.glb", { dracoLoader });
+    const gltf = useGltf(basePath("/models/items/mario_shell_red.glb"), {
+        dracoLoader,
+    });
     let rigidBody = $state<any>();
     let mesh = $state<THREE.Mesh>();
 

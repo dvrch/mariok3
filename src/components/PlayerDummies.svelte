@@ -4,6 +4,7 @@
     import { Collider, RigidBody } from "@threlte/rapier";
     import * as THREE from "three";
     import { gameStore } from "../lib/state/gameStore.svelte";
+    import { basePath } from "../lib/utils/path";
     import Mario from "./models/characters/Mario_kart.svelte";
 
     let { player, userPlayer } = $props<{ player: any; userPlayer: boolean }>();
@@ -53,7 +54,7 @@
             <Billboard position={[0, 2.5, 0]}>
                 <Text
                     text={player.state.profile.name}
-                    font="./fonts/HK.ttf"
+                    font={basePath("/fonts/HK.ttf")}
                     fontSize={0.4}
                     anchorX="center"
                     anchorY="middle"
