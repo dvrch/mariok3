@@ -18,7 +18,7 @@
 
   let {
     player,
-    userPlayer, //TODO
+    userPlayer,
     position = [25, 30, -120] as [number, number, number],
   } = $props();
 
