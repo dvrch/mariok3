@@ -34,15 +34,16 @@
 </script>
 
 {#if $gltf}
-    <RigidBody
-        type="fixed"
-        position={[position.x, position.y, position.z]}
-        oncollisionenter={onIntersect}
-        colliders={false}
-        name="banana"
-    >
-        <Collider shape="ball" args={[0.5]} sensor />
-    </RigidBody>
+    <T.Group position={[position.x, position.y, position.z]}>
+        <RigidBody
+            type="fixed"
+            oncollisionenter={onIntersect}
+            colliders={false}
+            name="banana"
+        >
+            <Collider shape="ball" args={[0.5]} sensor />
+        </RigidBody>
+    </T.Group>
 
     <T.Group position={[position.x, position.y, position.z]} {scale}>
         <T.Mesh
