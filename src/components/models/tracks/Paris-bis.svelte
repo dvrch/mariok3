@@ -23,25 +23,14 @@
 </script>
 
 {#if $gltf}
-    <!-- Legacy Scale Structure: 50 * 0.01 = 0.5 -->
+    <!-- Legacy Structure: Scale 50 at Top, Scene inside with trimesh colliders -->
     <T.Group {position} scale={50} {...props}>
-        <!-- Solid Road / Terrain (Legacy Position) - Outside of 0.01 scale to avoid Rapier issues -->
-        {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-            <RigidBody type="fixed">
-                <AutoColliders shape="trimesh">
-                    <!-- Scale the collider by 0.01 to match the visual mesh scale -->
-                    <T
-                        is={$gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-                        position={[0, 0.244 * 0.01, 0]}
-                        scale={0.01}
-                    />
-                </AutoColliders>
-            </RigidBody>
-        {/if}
-
-        <T.Group scale={0.01}>
-            <!-- Visual City -->
-            <T is={$gltf.scene} />
-        </T.Group>
+        <RigidBody type="fixed">
+            <AutoColliders shape="trimesh">
+                <T.Group scale={0.01}>
+                    <T is={$gltf.scene} />
+                </T.Group>
+            </AutoColliders>
+        </RigidBody>
     </T.Group>
 {/if}
