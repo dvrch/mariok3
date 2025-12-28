@@ -23,7 +23,9 @@
         if (other.rigidBodyObject.name === "player") {
             gameStore.shouldSlowDown = true;
             if (setNetworkBananas && networkBananas) {
-                setNetworkBananas(networkBananas.filter((b) => b.id !== id));
+                setNetworkBananas(
+                    networkBananas.filter((b: any) => b.id !== id),
+                );
             } else {
                 gameStore.removeBananaById(id);
             }
@@ -34,13 +36,12 @@
 {#if $gltf}
     <RigidBody
         type="fixed"
-        sensor
         position={[position.x, position.y, position.z]}
-        on:intersectionEnter={onIntersect}
+        oncollisionenter={onIntersect}
         colliders={false}
         name="banana"
     >
-        <Collider shape="ball" args={[0.5]} />
+        <Collider shape="ball" args={[0.5]} sensor />
     </RigidBody>
 
     <T.Group position={[position.x, position.y, position.z]} {scale}>

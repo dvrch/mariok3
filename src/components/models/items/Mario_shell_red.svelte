@@ -63,7 +63,7 @@
             position={[position.x, position.y, position.z]}
             name="shell"
             colliders={false}
-            on:collisionEnter={onCollide}
+            oncollisionenter={onCollide}
         >
             <Collider shape="ball" args={[0.5]} />
         </RigidBody>
