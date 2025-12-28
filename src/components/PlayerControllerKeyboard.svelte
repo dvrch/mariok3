@@ -408,7 +408,7 @@
 
     // Reset
     if (resetPressed) {
-      body.setTranslation({ x: 8, y: 2, z: -119 }, true);
+      body.setTranslation({ x: 8, y: 10, z: -119 }, true);
 
       body.setAngvel({ x: 0, y: 0, z: 0 }, true);
       currentSpeed = 0;
@@ -465,7 +465,7 @@
     <RigidBody
       bind:rigidBody={body}
       colliders={false}
-      position={[8, 60, -119]}
+      position={[8, 10, -119]}
       centerOfMass={[0, -1, 0]}
       mass={3}
       ccd

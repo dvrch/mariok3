@@ -25,23 +25,23 @@
 {#if $gltf}
     <!-- Unified Scale: 50 (to match Experience map scaling) -->
     <T.Group {position} scale={50} {...props}>
+        <!-- Solid Road / Terrain (Legacy Position) - Outside of 0.01 scale to avoid Rapier issues -->
+        {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
+            <RigidBody type="fixed">
+                <AutoColliders shape="trimesh">
+                    <!-- Scale the collider by 0.01 to match the visual mesh scale -->
+                    <T
+                        is={$gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
+                        position={[0, 0.244 * 0.01, 0]}
+                        scale={0.01}
+                    />
+                </AutoColliders>
+            </RigidBody>
+        {/if}
+
         <T.Group scale={0.01}>
             <!-- Visual City -->
             <T is={$gltf.scene} />
-
-            <!-- Solid Road / Terrain (Legacy Position) -->
-            {#if $gltf.nodes.ShadowCollision_M_Cmn_ShadowCollision_0}
-                <RigidBody type="fixed">
-                    <AutoColliders shape="trimesh">
-                        <T
-                            is={$gltf.nodes
-                                .ShadowCollision_M_Cmn_ShadowCollision_0}
-                            position={[0, 0.244, 0]}
-                        />
-                    </AutoColliders>
-                </RigidBody>
-            {/if}
         </T.Group>
     </T.Group>
 {/if}
-```
