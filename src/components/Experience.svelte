@@ -154,7 +154,7 @@
 
 <Skid />
 <Ground position={[0, 0, 0]} />
-<Environment />
+<Environment resolution={256} preset="lobby" />
 
 {#each networkBananas as banana (banana.id)}
     <Banana position={banana.position} id={banana.id} />

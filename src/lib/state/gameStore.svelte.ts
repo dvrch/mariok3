@@ -1,10 +1,10 @@
-
+import { basePath } from "../utils/path";
 export const playAudio = (path: string, callback?: () => void) => {
-    const audio = new Audio(`/sounds/${path}.mp3`);
+    const audio = new Audio(basePath(`/sounds/${path}`));
     if (callback) {
         audio.addEventListener("ended", callback);
     }
-    audio.play();
+    audio.play().catch(e => console.warn("Audio play failed:", e));
 };
 
 export const items = ["banana", "shell"];
@@ -71,6 +71,7 @@ class GameStore {
 
     setItem() {
         this.item = this.itemsList[Math.floor(Math.random() * this.itemsList.length)];
+        playAudio("turbo.wav"); // Placeholder for item collect sound
     }
 
     useItem() {
@@ -91,6 +92,7 @@ class GameStore {
 
     addCoins() {
         this.coins += 1;
+        playAudio("jump.mp3"); // Placeholder for coin collect sound
     }
 
     looseCoins() {

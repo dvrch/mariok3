@@ -61,7 +61,7 @@
     <T.Group bind:ref={marioGroup} rotation={[0, Math.PI, 0]} {...props}>
         {#each Object.entries($gltf.nodes) as [name, node]}
             {@const mesh = node as THREE.Mesh}
-            {#if mesh.type === "Mesh" && name !== "ShadowCollision_M_Cmn_ShadowCollision_0" && name !== "mt_Kart_Mario_Tire_S001" && name !== "mt_Kart_Mario_Tire_S002" && name !== "mt_Kart_Mario_Tire_S003" && name !== "mt_mario" && name !== "mt_kart_Mario_S"}
+            {#if mesh.type === "Mesh" && name !== "ShadowCollision_M_Cmn_ShadowCollision_0" && name !== "mt_Kart_Mario_Tire_S001" && name !== "mt_Kart_Mario_Tire_S002" && name !== "mt_Kart_Mario_Tire_S003" && name !== "mt_mario" && name !== "mt_kart_Mario_S" && name !== "Shadow_M_Kart_Mario_Shadow_0"}
                 <T.Mesh
                     castShadow
                     receiveShadow
@@ -115,6 +115,12 @@
             receiveShadow
             geometry={$gltf.nodes.mt_kart_Mario_S.geometry}
             material={$gltf.materials.mt_kart_Mario_S}
+        />
+        <T.Mesh
+            castShadow
+            receiveShadow
+            geometry={$gltf.nodes.mt_mario.geometry}
+            material={$gltf.materials.mt_mario}
         />
 
         <T.Group position={[0, 0.6, -1.2]} scale={boostScale * 1.2}>
