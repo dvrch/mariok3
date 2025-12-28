@@ -17,7 +17,7 @@
   let {
     player,
     userPlayer, //TODO
-    position = [8, 62, -119] as [number, number, number],
+    position = [8, 2, -119] as [number, number, number],
   } = $props();
 
   const { camera } = useThrelte();
