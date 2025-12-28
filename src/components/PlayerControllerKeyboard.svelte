@@ -19,7 +19,7 @@
   let {
     player,
     userPlayer,
-    position = [25, 30, -120] as [number, number, number],
+    position = [8, 60, -119] as [number, number, number],
   } = $props();
 
   const pressed = useKeyboardControls();

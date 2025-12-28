@@ -17,7 +17,7 @@
   let {
     player,
     userPlayer,
-    position = [8, 2, -119] as [number, number, number],
+    position = [8, 60, -119] as [number, number, number],
   } = $props();
 
   const { camera } = useThrelte();
@@ -78,6 +78,13 @@
   let targetXPosition = 0;
   let targetZPosition = 8;
   let slowDownDuration = 1500;
+
+  $effect(() => {
+    if (leftWheel && rightWheel && body && player.id === gameStore.id) {
+      gameStore.leftWheel = leftWheel;
+      gameStore.rightWheel = rightWheel;
+    }
+  });
 
   useTask((delta) => {
     if (player.id !== gameStore.id) return;
@@ -379,6 +386,21 @@
     const pos = body.translation();
     if (pos.y < -20 && !gameStore.isFallen) {
       gameStore.isFallen = true;
+    }
+
+    if (leftWheel) {
+      // @ts-ignore
+      leftWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      leftWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
+    if (rightWheel) {
+      // @ts-ignore
+      rightWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      rightWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
     }
   });
 
