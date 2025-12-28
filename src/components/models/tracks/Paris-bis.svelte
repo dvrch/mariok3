@@ -29,7 +29,9 @@
     <T.Group {position} scale={50} {...props}>
         <RigidBody type="fixed">
             <AutoColliders shape="trimesh">
-                <T is={$gltf.scene} />
+                <T.Group scale={0.01}>
+                    <T is={$gltf.scene} />
+                </T.Group>
             </AutoColliders>
         </RigidBody>
     </T.Group>
