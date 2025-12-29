@@ -1,6 +1,5 @@
 <script lang="ts">
   import { T, useTask, useThrelte } from "@threlte/core";
-  import { onMount } from "svelte";
   import { PositionalAudio } from "@threlte/extras";
   import { RigidBody, Collider } from "@threlte/rapier";
   import * as THREE from "three";
@@ -86,10 +85,6 @@
       gameStore.leftWheel = leftWheel;
       gameStore.rightWheel = rightWheel;
     }
-  });
-
-  onMount(() => {
-    gameStore.triggerReset();
   });
 
   useTask((delta) => {

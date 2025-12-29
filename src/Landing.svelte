@@ -52,6 +52,8 @@
             gameStore.controls = controlStyle;
             gameStore.introAnimationPlaying = false; // Stop intro
             gameStore.gameStarted = true; // Start game
+            // Déclencher le reset pour positionner correctement le joueur
+            gameStore.triggerReset();
         }
     };
 </script>

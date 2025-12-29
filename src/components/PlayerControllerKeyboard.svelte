@@ -1,6 +1,5 @@
 <script lang="ts">
   import { T, useTask, useThrelte } from "@threlte/core";
-  import { onMount } from "svelte";
   import { PositionalAudio } from "@threlte/extras";
   import { useKeyboardControls } from "./useKeyboardControls";
   import { RigidBody, Collider } from "@threlte/rapier";
@@ -88,11 +87,6 @@
       gameStore.leftWheel = leftWheel;
       gameStore.rightWheel = rightWheel;
     }
-  });
-
-  onMount(() => {
-    // Ensure player starts in a valid state (same as reset)
-    gameStore.triggerReset();
   });
 
   useTask((delta) => {
