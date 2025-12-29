@@ -19,7 +19,7 @@
   let {
     player,
     userPlayer,
-    position = [8, 2, -119] as [number, number, number],
+    position = [25, 30, -120] as [number, number, number],
   } = $props();
 
   const { camera } = useThrelte();
