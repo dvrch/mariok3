@@ -41,7 +41,7 @@
             colliders={false}
             name="banana"
         >
-            <Collider shape="ball" args={[0.5]} sensor />
+            <Collider shape="ball" args={[0.5]} sensor /> // verif
         </RigidBody>
     </T.Group>
 

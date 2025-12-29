@@ -81,7 +81,7 @@
     onMount(async () => {
         // Load points (Mock or fetch CurvedPath.json)
         try {
-            const resp = await fetch(basePath("/CurvedPath.json"));
+            const resp = await fetch(basePath("/CurvedPath.json")); // en BD
             const data = await resp.json();
             const points = Array.isArray(data) ? data : data.points;
 
@@ -177,4 +177,3 @@
     shadow.camera.top={300}
     shadow.camera.bottom={-300}
 />
-<!-- -- -->
