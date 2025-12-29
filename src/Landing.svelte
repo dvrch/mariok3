@@ -49,11 +49,26 @@
 
     const confirm = () => {
         if (controlStyle !== "") {
+            console.log(
+                "🎮 Confirm clicked, starting game with control:",
+                controlStyle,
+            );
             gameStore.controls = controlStyle;
             gameStore.introAnimationPlaying = false; // Stop intro
             gameStore.gameStarted = true; // Start game
-            // Déclencher le reset pour positionner correctement le joueur
-            gameStore.triggerReset();
+
+            // Attendre que le composant PlayerController soit monté avant de trigger le reset
+            setTimeout(() => {
+                console.log(
+                    "🔄 Calling triggerReset() after delay, resetSignal before:",
+                    gameStore.resetSignal,
+                );
+                gameStore.triggerReset();
+                console.log(
+                    "🔄 triggerReset() called, resetSignal after:",
+                    gameStore.resetSignal,
+                );
+            }, 100); // 100ms devrait suffire pour que Svelte monte le composant
         }
     };
 </script>
