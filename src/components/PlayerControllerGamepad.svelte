@@ -80,6 +80,13 @@
   let targetZPosition = 8;
   let slowDownDuration = 1500;
 
+  $effect(() => {
+    if (leftWheel && rightWheel && body && player.id === gameStore.id) {
+      gameStore.leftWheel = leftWheel;
+      gameStore.rightWheel = rightWheel;
+    }
+  });
+
   useTask((delta) => {
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return;
@@ -434,15 +441,55 @@
     if (pos.y < -20 && !gameStore.isFallen) {
       gameStore.isFallen = true;
     }
+    if (leftWheel) {
+      // @ts-ignore
+      leftWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      leftWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
+    if (rightWheel) {
+      // @ts-ignore
+      rightWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      rightWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
   });
 
   $effect(() => {
-    if (gameStore.resetSignal > 0) {
-      body.setTranslation(
-        { x: position[0], y: position[1], z: position[2] },
-        true,
-      );
-      body.setLinvel({ x: 0, y: 0, z: 0 }, true);
+    // Force Svelte à tracker ces dépendances
+    const currentBody = body;
+    const currentResetSignal = gameStore.resetSignal;
+
+    console.log("🔄 Reset $effect triggered:", {
+      hasBody: !!currentBody,
+      resetSignal: currentResetSignal,
+      position,
+      playerId: player.id,
+      gameStoreId: gameStore.id,
+    });
+
+    if (currentBody && currentResetSignal > 0) {
+      console.log("✅ Scheduling reset to position:", position);
+
+      // Attendre le prochain frame pour être sûr que le RigidBody est complètement initialisé
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          console.log("✅ Applying reset NOW to position:", position);
+          currentBody.setTranslation(
+            { x: position[0], y: position[1], z: position[2] },
+            true,
+          );
+          currentBody.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          currentBody.setAngvel({ x: 0, y: 0, z: 0 }, true);
+          console.log("✅ Reset applied successfully!");
+        });
+      });
+    } else {
+      console.log("⏸️ Reset skipped:", {
+        reason: !currentBody ? "body not ready" : "resetSignal is 0",
+      });
     }
   });
 </script>

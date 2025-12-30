@@ -79,6 +79,13 @@
   let targetZPosition = 8;
   let slowDownDuration = 1500;
 
+  $effect(() => {
+    if (leftWheel && rightWheel && body && player.id === gameStore.id) {
+      gameStore.leftWheel = leftWheel;
+      gameStore.rightWheel = rightWheel;
+    }
+  });
+
   useTask((delta) => {
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return;
@@ -380,10 +387,25 @@
     if (pos.y < -20 && !gameStore.isFallen) {
       gameStore.isFallen = true;
     }
+
+    if (leftWheel) {
+      // @ts-ignore
+      leftWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      leftWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
+    if (rightWheel) {
+      // @ts-ignore
+      rightWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      rightWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
   });
 
   $effect(() => {
-    if (gameStore.resetSignal > 0) {
+    if (body && gameStore.resetSignal > 0) {
       body.setTranslation(
         { x: position[0], y: position[1], z: position[2] },
         true,

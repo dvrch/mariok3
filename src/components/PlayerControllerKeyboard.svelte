@@ -82,11 +82,9 @@
   let slowDownDuration = 1500;
 
   $effect(() => {
-    if (leftWheel && rightWheel && body) {
-      // In the original, actions.setLeftWheel(...) was called.
-      // Assuming we might not need to store them in gameStore if logic is local?
-      // But if Mario model needs them, we might be fine.
-      // For now, let's assume local logic is sufficient for steering visuals initiated here.
+    if (leftWheel && rightWheel && body && player.id === gameStore.id) {
+      gameStore.leftWheel = leftWheel;
+      gameStore.rightWheel = rightWheel;
     }
   });
 
@@ -413,6 +411,21 @@
       true,
     );
 
+    if (leftWheel) {
+      // @ts-ignore
+      leftWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      leftWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
+    if (rightWheel) {
+      // @ts-ignore
+      rightWheel.kartRotation = kartRotation;
+      // @ts-ignore
+      rightWheel.isSpinning =
+        driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
+    }
+
     steeringAngleWheels = steeringAngle * 25;
 
     // Reset
@@ -465,7 +478,7 @@
   });
 
   $effect(() => {
-    if (gameStore.resetSignal > 0) {
+    if (body && gameStore.resetSignal > 0) {
       body.setTranslation(
         { x: position[0], y: position[1], z: position[2] },
         true,
