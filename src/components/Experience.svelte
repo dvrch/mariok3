@@ -10,6 +10,7 @@
     import Banana from "./models/items/Banana_peel_mario_kart.svelte";
     import Shell from "./models/items/Mario_shell_red.svelte";
     import PlayerDummies from "./PlayerDummies.svelte";
+    import Skid from "./Skid.svelte";
     import PlayerControllerKeyboard from "./PlayerControllerKeyboard.svelte";
     import PlayerControllerGamepad from "./PlayerControllerGamepad.svelte";
     import PlayerControllerTouch from "./PlayerControllerTouch.svelte";
@@ -150,6 +151,7 @@
 <ItemBox position={[-20, 2.5, -119]} />
 <Coin position={[-30, 2, -119]} />
 
+<Skid />
 <Ground position={[0, 0, 0]} />
 <Environment resolution={256} preset="lobby" />
 
