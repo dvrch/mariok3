@@ -2,7 +2,7 @@
     import { T, useTask } from "@threlte/core";
     import { useGltf } from "@threlte/extras";
     import { RigidBody, Collider } from "@threlte/rapier";
-    import { gameStore } from "../../../lib/state/gameStore.svelte";
+    import { gameStore, audioManager } from "../../../lib/state/gameStore.svelte";
     import { dracoLoader } from "../../../lib/loaders/draco";
     import { basePath } from "../../../lib/utils/path";
     import * as THREE from "three";
@@ -36,6 +36,7 @@
     const onIntersect = ({ other }: any) => {
         if (other.rigidBodyObject.name === "player") {
             gameStore.addCoins();
+            audioManager.play("jump");
             scale = 0;
             frames = 600;
             if (body) body.setEnabled(false);

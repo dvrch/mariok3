@@ -97,6 +97,15 @@
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return; // cam might be null initially
 
+    // Engine Sound Control
+    if (engineSound) {
+      if (upPressed && !engineSound.isPlaying) {
+        engineSound.play();
+      } else if (!upPressed && engineSound.isPlaying) {
+        engineSound.stop();
+      }
+    }
+
     // Sound Updates
     if (engineSound && engineSound.isPlaying) {
       engineSound.setVolume(currentSpeed / 300 + 0.2);
@@ -212,18 +221,6 @@
 
     // Move Kart
     kart.rotation.y += steeringAngle * dt;
-
-    // Damping
-    const linvel = body.linvel();
-
-    body.applyImpulse(
-      {
-        x: -linvel.x * 0.1 * dt,
-        y: 0,
-        z: -linvel.z * 0.1 * dt,
-      },
-      true,
-    );
 
     const bodyPosition = body.translation();
     kart.position.set(bodyPosition.x, bodyPosition.y - 0.5, bodyPosition.z);

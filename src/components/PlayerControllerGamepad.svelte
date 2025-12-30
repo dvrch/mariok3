@@ -91,9 +91,15 @@
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return;
 
-    if (engineSound && engineSound.isPlaying) {
-      engineSound.setVolume(currentSpeed / 300 + 0.2);
-      engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
+    // Engine Sound Control
+    if (engineSound) {
+      if (!engineSound.isPlaying) {
+        engineSound.play();
+      }
+      if (engineSound.isPlaying) {
+        engineSound.setVolume(currentSpeed / 300 + 0.2);
+        engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
+      }
     }
 
     // Gamepad Inputs

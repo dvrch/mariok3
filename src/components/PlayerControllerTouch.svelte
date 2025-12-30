@@ -90,9 +90,15 @@
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return;
 
-    if (engineSound && engineSound.isPlaying) {
-      engineSound.setVolume(currentSpeed / 300 + 0.2);
-      engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
+    // Engine Sound Control
+    if (engineSound) {
+      if (!engineSound.isPlaying) {
+        engineSound.play();
+      }
+      if (engineSound.isPlaying) {
+        engineSound.setVolume(currentSpeed / 300 + 0.2);
+        engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
+      }
     }
 
     // Touch Inputs from GameStore
@@ -169,17 +175,6 @@
 
     // Move Kart
     kart.rotation.y += steeringAngle * delta * 144;
-
-    // Damping
-    const linvel = body.linvel();
-    body.applyImpulse(
-      {
-        x: -linvel.x * 0.1 * delta * 144,
-        y: 0,
-        z: -linvel.z * 0.1 * delta * 144,
-      },
-      true,
-    );
 
     const bodyPosition = body.translation();
     kart.position.set(bodyPosition.x, bodyPosition.y - 0.5, bodyPosition.z);
