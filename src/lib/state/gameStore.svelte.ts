@@ -29,12 +29,9 @@ export interface Player {
 export const ITEM_TYPES = ["mushroom", "shell", "banana"] as const;
 export type ItemType = typeof ITEM_TYPES[number] | "";
 
-<<<<<<< Updated upstream
 // Export audioManager for use in components
 export { audioManager } from "./audioConfig";
 
-=======
->>>>>>> Stashed changes
 // Re-export for backward compatibility
 export const playAudio = (key: string, callback?: () => void) => {
     audioManager.play(key as any, { callback });

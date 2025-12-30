@@ -223,6 +223,17 @@
     // Move Kart
     kart.rotation.y += steeringAngle * dt;
 
+    // Apply damping to simulate slowdown when no keys are pressed
+    const linvel = body.linvel();
+    body.applyImpulse(
+      {
+        x: -linvel.x * (1 - damping) * dt,
+        y: 0,
+        z: -linvel.z * (1 - damping) * dt,
+      },
+      true,
+    );
+
     const bodyPosition = body.translation();
     kart.position.set(bodyPosition.x, bodyPosition.y - 0.5, bodyPosition.z);
 
