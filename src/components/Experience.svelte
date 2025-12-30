@@ -49,7 +49,7 @@
                 pointest[currentPoint].z,
             );
 
-            cam.position.lerp(targetPoint, delta * speedFactor);
+            if (cam) cam.position.lerp(targetPoint, delta * speedFactor);
 
             const nextPointIdx = (currentPoint + 1) % pointest.length;
             const lookAtPoint = new THREE.Vector3(
