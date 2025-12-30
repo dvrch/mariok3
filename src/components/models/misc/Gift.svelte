@@ -1,7 +1,7 @@
 <script lang="ts">
     import { T } from "@threlte/core";
     import { Collider } from "@threlte/rapier";
-    import Mario_kart_item_box from "./Mario_kart_item_box.svelte";
+    import GiftModel from "./Gift_model.svelte";
     import { gameStore } from "../../../lib/state/gameStore.svelte";
     import { audioManager } from "../../../lib/state/audioConfig";
     import { onMount } from "svelte";
@@ -14,9 +14,9 @@
         console.log("🎁 Gift collision with:", other.rigidBody?.name);
         
         if (other.rigidBody?.name === "player" && !isCollected) {
-            console.log("✅ Gift collected!");
+            console.log("✅ Gift collected! Triggering item and effects");
             isCollected = true;
-            gameStore.setItem();
+            gameStore.setItem(); // This triggers ItemParticles
             audioManager.play("turbo");
         }
     };
@@ -28,7 +28,7 @@
 
 {#if !isCollected}
     <T.Group {position}>
-        <Mario_kart_item_box scale={[0.5, 0.5, 0.5]} position={[0, 0, 0]} />
+        <GiftModel scale={[0.5, 0.5, 0.5]} position={[0, 0, 0]} />
         <Collider 
             shape="ball" 
             args={[1.5]} 

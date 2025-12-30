@@ -1,18 +1,11 @@
 <script lang="ts">
-    import { T } from "@threlte/core";
+    import ItemBox_model from "./ItemBox_model.svelte";
 
-    interface Props {
+    let { position = [0, 0, 0], scale = [1, 1, 1], rotation = [0, 0, 0] } = $props<{
         position?: [number, number, number];
         scale?: [number, number, number] | number;
         rotation?: [number, number, number];
-    }
-
-    let { position = [0, 0, 0], scale = [1, 1, 1], rotation = [0, 0, 0] } = $props<Props>();
+    }>();
 </script>
 
-<T.Group {position} {scale} {rotation}>
-    <T.Mesh castShadow receiveShadow>
-        <T.BoxGeometry args={[1, 1, 1]} />
-        <T.MeshStandardMaterial color={0xffff00} metalness={0.5} roughness={0.5} />
-    </T.Mesh>
-</T.Group>
+<ItemBox_model {position} {scale} {rotation} />
