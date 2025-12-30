@@ -1,38 +1,18 @@
 <script lang="ts">
-  import { T, useTask } from '@threlte/core'
-  import { useGltf, Float, RoundedBox } from '@threlte/extras'
-  import { RigidBody } from '@threlte/rapier'
-  import { gameStore } from '../../../lib/state/gameStore.svelte'
+    import { T } from "@threlte/core";
 
-  let { position = [0, 0, 0] } = $props();
+    interface Props {
+        position?: [number, number, number];
+        scale?: [number, number, number] | number;
+        rotation?: [number, number, number];
+    }
 
+    let { position = [0, 0, 0], scale = [1, 1, 1], rotation = [0, 0, 0] } = $props<Props>();
 </script>
 
-<RigidBody 
-    type="fixed" 
-    name="itemBox"
-    sensor
-    onintersectionenter={() => {
-        gameStore.setItem();
-    }}
-    {position}
->
-    <T.Mesh>
+<T.Group {position} {scale} {rotation}>
+    <T.Mesh castShadow receiveShadow>
         <T.BoxGeometry args={[1, 1, 1]} />
-        <T.MeshStandardMaterial color="green" />
+        <T.MeshStandardMaterial color={0xffff00} metalness={0.5} roughness={0.5} />
     </T.Mesh>
-</RigidBody>
-
-<T.Group {position} dispose={null}>
-    <Float
-        speed={2}
-        rotationIntensity={20}
-        floatIntensity={1}
-        floatingRange={[1, 2]}
-    >
-        <T.Mesh>
-            <T.BoxGeometry args={[1, 1, 1]} />
-            <T.MeshBasicMaterial color="green" />
-        </T.Mesh>
-    </Float>
 </T.Group>

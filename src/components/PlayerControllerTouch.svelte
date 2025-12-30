@@ -408,6 +408,21 @@
       rightWheel.isSpinning =
         driftLeft || driftRight || (shouldSlow && currentSpeed > 5);
     }
+
+    const isDrifting = driftButton && linvel.length() > 5;
+
+    // Skids - only when drifting and turning, not when jumping
+    if (isDrifting && linvel.length() > 5 && !isJumping) {
+      const skidFreq = 5;
+      if (Math.random() < skidFreq / 60) {
+        const skidPos = {
+          x: body.translation().x + (Math.random() - 0.5) * 2,
+          y: body.translation().y - 0.5,
+          z: body.translation().z + (Math.random() - 0.5) * 2,
+        };
+        gameStore.addSkid(skidPos);
+      }
+    }
   });
 
   $effect(() => {
