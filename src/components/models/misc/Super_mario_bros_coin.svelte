@@ -13,7 +13,7 @@
     });
     let body = $state<any>();
     let mesh = $state<THREE.Mesh>();
-    let scale = $state(0.424); // Legacy
+    let scale = $state(0.426); // Legacy
     let frames = 0;
 
     useTask((delta) => {
