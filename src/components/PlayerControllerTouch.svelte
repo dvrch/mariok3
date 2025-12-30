@@ -96,8 +96,8 @@
         engineSound.play();
       }
       if (engineSound.isPlaying) {
-        engineSound.setVolume(currentSpeed / 300 + 0.2);
-        engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
+        engineSound.setVolume(Math.min(currentSpeed / 300 + 0.5, 1));
+        engineSound.setPlaybackRate(currentSpeed / 10 + 0.8);
       }
     }
 

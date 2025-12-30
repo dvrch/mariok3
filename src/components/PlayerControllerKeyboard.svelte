@@ -118,8 +118,8 @@
 
     // Sound Updates
     if (engineSound && engineSound.isPlaying) {
-      engineSound.setVolume(currentSpeed / 300 + 0.2);
-      engineSound.setPlaybackRate(currentSpeed / 10 + 0.1);
+      engineSound.setVolume(Math.min(currentSpeed / 300 + 0.5, 1));
+      engineSound.setPlaybackRate(currentSpeed / 10 + 0.8);
     }
 
     // Debugging controls
@@ -398,12 +398,12 @@
       cam.position.x = THREE.MathUtils.lerp(
         cam.position.x,
         targetXPosition,
-        0.01 * dt * 144,
+        0.01 * dt,
       );
       cam.position.z = THREE.MathUtils.lerp(
         cam.position.z,
         targetZPosition,
-        0.01 * dt * 144,
+        0.01 * dt,
       );
       // Faire regarder la caméra vers le kart (légèrement en avant du kart)
       const lookAtPosition = new THREE.Vector3(0, 0.5, -2);

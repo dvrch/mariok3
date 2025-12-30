@@ -149,8 +149,8 @@
 {/if}
 
 <ParisBis position={[0, 0, 0]} />
-<ItemBox position={[-20, 6, -119]} />
-<Coin position={[-20, 6, -119]} />
+<ItemBox position={[-20, 2.5, -119]} />
+<Coin position={[-30, 2, -119]} />
 
 <Skid />
 <Ground position={[0, 0, 0]} />
