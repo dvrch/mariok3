@@ -161,16 +161,6 @@
                 <FakeFlame {isBoosting} />
             </T.Mesh>
         </T.Group>
-        <T.Group
-            position={[-0.18, 0.75, -1.1]}
-            rotation={[Math.PI / 1.5, 0, 0]}
-            scale={boostScale * 0.8}
-        >
-            <T.Mesh>
-                <T.CylinderGeometry args={[0.09, 0, 1, 128, 64, true]} />
-                <FakeFlame {isBoosting} />
-            </T.Mesh>
-        </T.Group>
 
         <!-- Flames and effects could be added here similar to original -->
     </T.Group>

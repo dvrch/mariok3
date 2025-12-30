@@ -1,7 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { gameStore } from "./lib/state/gameStore.svelte";
-    import { basePath } from "./lib/utils/path";
+    // src/lib/utils/path.ts
+    // Resolve base path without relying on SvelteKit's $app/paths (avoids TS error)
+    const base: string = (() => {
+        if (typeof window === 'undefined') return '/';
+        const href = document.querySelector('base')?.getAttribute('href') ?? '/';
+        return href === '/' ? '/' : href.replace(/\/$/, '');
+    })();
+
+    export const basePath = (p: string) => (base === '/' ? p : `${base}${p}`);
     import gsap from "gsap";
 
     let logo = $state<HTMLImageElement | null>(null);
