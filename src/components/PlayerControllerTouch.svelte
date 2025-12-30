@@ -533,7 +533,6 @@
       <PositionalAudio
         bind:ref={engineSound}
         src="/sounds/engine.wav"
-        autoplay
         loop
         distance={1000}
       />

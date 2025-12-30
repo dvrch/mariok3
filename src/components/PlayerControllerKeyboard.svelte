@@ -97,6 +97,16 @@
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return; // cam might be null initially
 
+    // Controls
+    const upPressed = $pressed.up;
+    const downPressed = $pressed.down;
+    const leftPressed = $pressed.left;
+    const rightPressed = $pressed.right;
+    const jumpPressed = $pressed.jump;
+    const shootPressed = $pressed.shoot;
+    const resetPressed = $pressed.reset;
+    const escPressed = $pressed.escape;
+
     // Engine Sound Control
     if (engineSound) {
       if (upPressed && !engineSound.isPlaying) {
@@ -119,18 +129,9 @@
     if (player.id !== gameStore.id) return;
     if (!body || !mario || !kart) return;
 
-    // Controls
-    const upPressed = $pressed.up;
     if (upPressed || $pressed.down) {
       console.log("Input detected!", { up: $pressed.up, down: $pressed.down });
     }
-    const downPressed = $pressed.down;
-    const leftPressed = $pressed.left;
-    const rightPressed = $pressed.right;
-    const jumpPressed = $pressed.jump;
-    const shootPressed = $pressed.shoot;
-    const resetPressed = $pressed.reset;
-    const escPressed = $pressed.escape;
 
     // Handling
     const kartRotation = kart.rotation.y - driftDirection * driftForce;
@@ -613,7 +614,6 @@
       <PositionalAudio
         bind:ref={engineSound}
         src={basePath("/sounds/engine.wav")}
-        autoplay
         loop
         distance={1000}
       />
