@@ -81,31 +81,30 @@
     onMount(async () => {
         // Load points (Mock or fetch CurvedPath.json)
         try {
-            const resp = await fetch(basePath("/CurvedPath.json")); // en BD
+            const resp = await fetch("/CurvedPath.json");
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const data = await resp.json();
+            console.log("Loaded CurvedPath data:", data);
+            
             const points = Array.isArray(data) ? data : data.points;
 
-            if (Array.isArray(points)) {
-                console.log("Loaded points:", points.length);
+            if (Array.isArray(points) && points.length > 0) {
+                console.log("✅ Loaded points:", points.length);
                 const mappedPoints = points
                     .map((p: any) => ({
-                        x: p.x * 50,
-                        y: p.y * 50,
-                        z: p.z * 50,
+                        x: (p.x || 0) * 50,
+                        y: (p.y || 0) * 50,
+                        z: (p.z || 0) * 50,
                     }))
                     .reverse();
-                // CRITICAL: Reassign to trigger Svelte reactivity, don't use push()
                 pointest = mappedPoints;
-                currentPoint = 0; // Start from the beginning
+                currentPoint = 0;
                 console.log("✅ Points assigned, animation should start");
             } else {
-                console.warn(
-                    "CurvedPath.json did not return a valid points array",
-                    data,
-                );
+                console.warn("No points found in CurvedPath.json", data);
             }
         } catch (e) {
-            console.error("Failed to load path", e);
+            console.error("Failed to load path:", e);
         }
     });
 </script>

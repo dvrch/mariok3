@@ -13,6 +13,14 @@
 
 {#if gltf}
     <T.Group {position} {scale} {rotation}>
-        <T.Primitive object={gltf.scene} />
+        {#each gltf.scene.children as child (child.uuid)}
+            <T.Mesh 
+                geometry={child.geometry} 
+                material={child.material}
+                position={[child.position.x, child.position.y, child.position.z]}
+                rotation={[child.rotation.x, child.rotation.y, child.rotation.z]}
+                scale={[child.scale.x, child.scale.y, child.scale.z]}
+            />
+        {/each}
     </T.Group>
 {/if}
