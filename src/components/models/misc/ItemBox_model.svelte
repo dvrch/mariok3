@@ -11,18 +11,20 @@
     const gltf = useLoader(GLTFLoader, "/models/misc/mario_kart_item_box.glb");
 </script>
 
-{#if gltf}
+{#if gltf && gltf.scene}
     <T.Group {position} {scale} {rotation}>
         {#each gltf.scene.children as child (child.uuid)}
-            <T.Mesh 
-                geometry={child.geometry} 
-                material={child.material}
-                position={[child.position.x, child.position.y, child.position.z]}
-                rotation={[child.rotation.x, child.rotation.y, child.rotation.z]}
-                scale={[child.scale.x, child.scale.y, child.scale.z]}
-                castShadow
-                receiveShadow
-            />
+            {#if child.geometry && child.material}
+                <T.Mesh 
+                    geometry={child.geometry} 
+                    material={child.material}
+                    position={[child.position.x, child.position.y, child.position.z]}
+                    rotation={[child.rotation.x, child.rotation.y, child.rotation.z]}
+                    scale={[child.scale.x, child.scale.y, child.scale.z]}
+                    castShadow
+                    receiveShadow
+                />
+            {/if}
         {/each}
     </T.Group>
 {/if}

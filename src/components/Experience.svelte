@@ -79,17 +79,23 @@
     });
 
     onMount(async () => {
+        console.log("🎬 Experience onMount called");
         // Load points (Mock or fetch CurvedPath.json)
         try {
-            const resp = await fetch("/CurvedPath.json");
+            const curvedPathUrl = `${basePath}/CurvedPath.json`;
+            console.log("📂 Fetching", curvedPathUrl, "...");
+            const resp = await fetch(curvedPathUrl);
+            console.log("📡 Fetch response status:", resp.status, resp.statusText);
+            
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const data = await resp.json();
-            console.log("Loaded CurvedPath data:", data);
+            console.log("✅ CurvedPath.json loaded:", data);
             
             const points = Array.isArray(data) ? data : data.points;
+            console.log("📊 Points extracted:", points);
 
             if (Array.isArray(points) && points.length > 0) {
-                console.log("✅ Loaded points:", points.length);
+                console.log("✅ Found points:", points.length);
                 const mappedPoints = points
                     .map((p: any) => ({
                         x: (p.x || 0) * 50,
@@ -99,12 +105,12 @@
                     .reverse();
                 pointest = mappedPoints;
                 currentPoint = 0;
-                console.log("✅ Points assigned, animation should start");
+                console.log("✅ Points assigned to state, pointest.length =", pointest.length);
             } else {
-                console.warn("No points found in CurvedPath.json", data);
+                console.warn("⚠️ No points found in CurvedPath.json", data);
             }
         } catch (e) {
-            console.error("Failed to load path:", e);
+            console.error("❌ Failed to load path:", e);
         }
     });
 </script>
