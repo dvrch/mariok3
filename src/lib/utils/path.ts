@@ -1,5 +1,5 @@
 export const basePath = (path: string) => {
-    const base = import.meta.env.BASE_URL;
+    const base = (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
     // ensure base ends with / and path doesn't start with /
     const cleanBase = base.endsWith('/') ? base : base + '/';
     const cleanPath = path.startsWith('/') ? path.slice(1) : path;

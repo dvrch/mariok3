@@ -82,12 +82,7 @@
         console.log("🎬 Experience onMount called");
         // Load points (Mock or fetch CurvedPath.json)
         try {
-            const curvedPathUrl = `${basePath}/CurvedPath.json`;
-            console.log("📂 Fetching", curvedPathUrl, "...");
-            const resp = await fetch(curvedPathUrl);
-            console.log("📡 Fetch response status:", resp.status, resp.statusText);
-            
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const resp = await fetch(basePath("/CurvedPath.json")); // en BD
             const data = await resp.json();
             console.log("✅ CurvedPath.json loaded:", data);
             
