@@ -89,13 +89,13 @@
             const points = Array.isArray(data) ? data : data.points;
             console.log("📊 Points extracted:", points);
 
-            if (Array.isArray(points) && points.length > 0) {
-                console.log("✅ Found points:", points.length);
+            if (Array.isArray(points)) {
+                console.log("Loaded points:", points.length);
                 const mappedPoints = points
                     .map((p: any) => ({
-                        x: (p.x || 0) * 50,
-                        y: (p.y || 0) * 50,
-                        z: (p.z || 0) * 50,
+                        x: p.x * 50,
+                        y: p.y * 50,
+                        z: p.z * 50,
                     }))
                     .reverse();
                 pointest = mappedPoints;
